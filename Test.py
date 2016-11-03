@@ -1,4 +1,5 @@
 import Engine, Messenger, Agent
 
-v = Agent.periodic_auction_scanner('600313', 10)
-print(v)
+e = Engine.SmartMoney()
+s = e.calculate_smart_money_emotion('600313', '2016-11-01')
+print(s)
