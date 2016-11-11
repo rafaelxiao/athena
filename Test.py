@@ -1,5 +1,27 @@
-import Engine, Messenger, Agent
+import Engine, Messenger, Agent, Toolbox, Workshop
+import sys
+import time
 
-e = Engine.SmartMoney()
-s = e.calculate_smart_money_emotion('600313', '2016-11-01')
-print(s)
+'''
+x = Agent.periodic_auction_scanner('600313', 5)
+for i in x:
+    print(i)
+'''
+
+s = Engine.StockAccount()
+
+s.deposit_cash(100)
+print(s.cash)
+print(s.original_cash)
+
+s.buy('600313', 1, 30)
+
+print(s.stock_hold)
+print(s.cash)
+print(s.balance())
+
+s.buy('600222', 1, 50)
+
+print(s.stock_hold)
+print(s.cash)
+print(s.balance())

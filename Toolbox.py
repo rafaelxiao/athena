@@ -1,4 +1,5 @@
-import datetime
+import datetime, time, sys
+
 
 def date_encoding(date_string):
     '''
@@ -98,3 +99,21 @@ def time_list():
             time_list.append(i)
         i = TS.add_time(i, 1)
     return time_list
+
+def process_monitor(percent):
+    '''
+    Show the process with a bar
+    :param percent: int, the percent completed
+    :return: None
+    '''
+    percent = int(percent)
+    completed = '|'
+    uncompleted = ' '
+    percent_monitor = '  %d%%' %percent
+    bar = completed * percent + uncompleted * (100 - percent) + percent_monitor
+    sys.stdout.write('\r')
+    sys.stdout.write(bar)
+    sys.stdout.flush()
+    if percent == 100:
+        print('\r')
+

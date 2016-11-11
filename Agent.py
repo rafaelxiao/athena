@@ -11,10 +11,13 @@ def periodic_auction_scanner(code, days, start_date = ''):
     outstanding = Messenger.get_stock_outstanding(code)
     list = []
     days_list = Toolbox.workday_list(days, start_date)
+    count = 1
     for i in days_list:
         volume = Engine.periodic_auction_volume(code, i)
         ratio = float(volume / outstanding)
         ratio = round(ratio * 100, 5)
         pair = (Toolbox.date_decoding(i), ratio)
         list.append(pair)
+        Toolbox.process_monitor(count / len(days_list) * 100)
+        count += 1
     return list

@@ -194,3 +194,217 @@ class SmartMoney:
         high_time_list = transformed_set[int(len(transformed_set) * 0.8):]
         self.bubble_sort(high_time_list, 0)
         return high_time_list
+
+class Stock:
+    '''
+    A presentation of a stock hold
+    '''
+
+    def initiate_a_stock(self, code, price, volume):
+        '''
+        Initiate a stock with a data structure (code, price, volume)
+        :param code: str, stock index
+        :param price: float, the price of the stock
+        :param volume: int, the volume of the stock
+        :return: a set, (code, price, volume)
+        '''
+        return (code, price, volume)
+
+    def select_stock_code(self, stock):
+        '''
+        Selector, select the stock code
+        :param stock: the Stock data structure
+        :return: str, the stock hold
+        '''
+        return stock[0]
+
+    def select_stock_volume(self, stock):
+        '''
+        Selector, select the stock volume
+        :param stock: the Stock data structure
+        :return: int, the stock volume
+        '''
+        return stock[2]
+
+    def select_stock_price(self, stock):
+        '''
+        Selector, select the stock price
+        :param stock: the Stock data structure
+        :return: float, the stock price
+        '''
+        return stock[1]
+
+    def value_a_stock(self, stock):
+        '''
+        Get the value of a stock
+        :param stock:  the Stock data structure
+        :return: float, the value of the stock
+        '''
+        return stock[1] * stock[2]
+
+    def add_into_a_stock(self, stock1, stock2):
+        '''
+        Add stock1 into the stock2 and generate a new Stock(data structure)
+        :param stock1: Stock data structure
+        :param stock2: Stock data structure
+        :return: a new Stock data structure
+        '''
+        code = self.select_stock_code(stock1)
+        value = self.value_a_stock(stock1) + self.value_a_stock(stock2)
+        volume = self.select_stock_volume(stock1) + self.select_stock_volume(stock2)
+        if volume != 0:
+            price = value / volume
+        else: price = 0
+        return self.initiate_a_stock(code, price, volume)
+
+    def retrive_from_a_stock(self, stock1, stock2):
+        '''
+        Retrieve stock1 into the stock2 and generate a new Stock(data structure)
+        :param stock1: Stock data structure
+        :param stock2: Stock data structure
+        :return: a new Stock data structure
+        '''
+        code = self.select_stock_code(stock1)
+        value = self.value_a_stock(stock2) - self.value_a_stock(stock1)
+        volume = self.select_stock_volume(stock2) - self.select_stock_volume(stock1)
+        if volume != 0:
+            price = value / volume
+        else: price = 0
+        return self.initiate_a_stock(code, price, volume)
+
+class StockAccount(Stock):
+    '''
+    A stock account with functionality
+    '''
+
+    def __init__(self):
+        '''
+        Initiate the StockAccount, with float represent cash & original_cash, set represent stock hold
+        :return: None
+        '''
+        self.original_cash = float()
+        self.cash = float()
+        self.stock_hold = []
+
+    def find_stock(self, stock):
+        '''
+        Search a stock from the stock hold set to see if it is exist
+        :param stock: a Stock data structure
+        :return: the index if existed, otherwise -1
+        '''
+        if (len(self.stock_hold)) >= 1:
+            for i in range(len(self.stock_hold)):
+                if self.select_stock_code(stock) == self.select_stock_code(self.stock_hold[i]):
+                    return i
+            return -1
+        else: return -1
+
+    def clean_stock_hold(self):
+        '''
+        Clear the stock that is empty from the stock hold
+        :return: None
+        '''
+        for i in self.stock_hold:
+            if i[2] == 0:
+                idx = self.find_stock(i)
+                del self.stock_hold[idx]
+
+    def value_stock_hold(self, stock_hold_list):
+        '''
+        Valuate the all the stock hold
+        :param stock_hold_list: the stock hold list needed to be valued
+        :return: float, the value
+        '''
+        balance = 0
+        for i in stock_hold_list:
+            balance += self.value_a_stock(i)
+        return balance
+
+    def deposit_cash(self, amount):
+        '''
+        The procedure to deposit cash into the account
+        :param amount: float, the cash amount
+        :return: None
+        '''
+        self.cash += amount
+        self.original_cash += amount
+
+    def withdraw_cash(self, amount):
+        '''
+        The procedure to withdraw cash from the account
+        :param amount: float, the cash amount
+        :return: None
+        '''
+        if amount > self.cash:
+            amount = self.cash
+        self.cash -= amount
+        self.original_cash -= amount
+        return amount
+
+    def investment_return(self):
+        '''
+        Calculate the investment return of the account
+        :return: float, the investment return
+        '''
+        if self.original_cash == 0:
+            return 0
+        else:
+            return self.balance() / self.original_cash
+
+    def balance(self):
+        '''
+        Valuate the account
+        :return: float, the total balance of the account
+        '''
+        stock_value = self.value_stock_hold(self.stock_hold)
+        balance = self.cash + stock_value
+        return balance
+
+    def buy(self, code, price, volume):
+        '''
+        The procedure to buy a stock into the account
+        :param code: str, the stock index
+        :param price: float, the stock price
+        :param volume: int, the stock volume
+        :return: None
+        '''
+        stock = self.initiate_a_stock(code, price, volume)
+        value = self.value_a_stock(stock)
+        if value <= self.cash:
+            self.cash -= value
+            i = self.find_stock(stock)
+            if i >= 0:
+                self.stock_hold[i] = self.add_into_a_stock(stock, self.stock_hold[i])
+            else:
+                self.stock_hold.append(stock)
+
+    def sell(self, code, price, volume):
+        '''
+        The procedure to sell a stock from the account
+        :param code: str, the stock index
+        :param price: float, the stock price
+        :param volume: int, the stock volume
+        :return: None
+        '''
+        stock = self.initiate_a_stock(code, price, volume)
+        i = self.find_stock(stock)
+        if i >= 0:
+            if volume <= self.select_stock_volume(self.stock_hold[i]):
+                self.cash += self.value_a_stock(stock)
+                self.stock_hold[i] = self.retrive_from_a_stock(stock, self.stock_hold[i])
+        self.clean_stock_hold()
+
+    def reset_the_account(self):
+        '''
+        Reset the account
+        :return: None
+        '''
+        self.__init__()
+
+    def open_an_new_account(self, amount):
+        '''
+        :param amount: float, the cash investment
+        :return:
+        '''
+        self.reset_the_account()
+        self.deposit_cash(amount)
