@@ -1,5 +1,5 @@
-import math
-import Messenger
+import math, datetime
+import Messenger, Toolbox
 
 def turnover(volume, code):
     '''
@@ -360,6 +360,39 @@ class StockAccount(Stock):
         balance = self.cash + stock_value
         return balance
 
+    def present_value_of_a_stock(self, code, price):
+        '''
+        Value a stock with current price
+        :param code: str, the stock index
+        :param price: float, the current stock price
+        :return: the present value of the stock
+        '''
+        volume = 0
+        stock = self.initiate_a_stock(code, price, volume)
+        i = self.find_stock(stock)
+        if i >= 0:
+            volume = self.select_stock_volume(self.stock_hold[i])
+        stock = self.initiate_a_stock(code, price, volume)
+        value = self.value_a_stock(stock)
+        return value
+
+    def origin_value_of_a_stock(self, code):
+        '''
+        Value a stock with purchase price
+        :param code: str, the stock index
+        :return: the original value of the stock
+        '''
+        volume = 0
+        price = 0
+        stock = self.initiate_a_stock(code, price, volume)
+        i = self.find_stock(stock)
+        if i >= 0:
+            volume = self.select_stock_volume(self.stock_hold[i])
+            price = self.select_stock_price(self.stock_hold[i])
+        stock = self.initiate_a_stock(code, price, volume)
+        value = self.value_a_stock(stock)
+        return value
+
     def buy(self, code, price, volume):
         '''
         The procedure to buy a stock into the account
@@ -408,3 +441,51 @@ class StockAccount(Stock):
         '''
         self.reset_the_account()
         self.deposit_cash(amount)
+
+    def get_price_with_date(self, f, code, date=datetime.date.today()):
+        '''
+        Get the relevant information of a specific day, defaults today
+        :param f: a function take (code, date) as input and return a value
+        :param code: str, stock index
+        :param date: str, date
+        :return: float, a price value
+        '''
+        if date != datetime.date.today():
+            date = Toolbox.date_encoding(date)
+        if date.weekday() == 5:
+            date = date - datetime.timedelta(1)
+        elif date.weekday() == 6:
+            date = date - datetime.timedelta(2)
+        else: pass
+        date = Toolbox.date_decoding(date)
+        return f(code, date)
+
+    def current_price_list(self):
+        '''
+        Generate a list of price, accordance with the stock hold account
+        :return: a list with current price
+        '''
+        current_price_list = []
+        for i in self.stock_hold:
+            f = Messenger.get_stock_open_price
+            code = self.select_stock_code(i)
+            close_price = self.get_price_with_date(f, code)
+            current_price_list.append(close_price)
+        return current_price_list
+
+    def current_value_of_account(self):
+        '''
+        Get the current value of the stock hold account
+        :return: float, the current value of the account
+        '''
+        list = self.current_price_list()
+        stock_hold = []
+        for i in range(len(list)):
+            code = self.select_stock_code(self.stock_hold[i])
+            volume = self.select_stock_volume(self.stock_hold[i])
+            price = float(list[i])
+            hold = self.initiate_a_stock(code, price, volume)
+            stock_hold.append(hold)
+        value = self.value_stock_hold(stock_hold) + self.cash
+        return value
+
