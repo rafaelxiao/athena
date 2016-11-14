@@ -147,6 +147,6 @@ def pick_out(list, f):
     '''
     hold = list[0]
     for i in range(len(list) - 1):
-        if f(list[i], list[i+1]) == True:
+        if f(hold, list[i+1]):
             hold = list[i+1]
     return hold
