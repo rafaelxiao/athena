@@ -1,4 +1,4 @@
-import math, datetime
+import math, datetime, time
 import Messenger, Toolbox
 
 def turnover(volume, code):
@@ -442,7 +442,7 @@ class StockAccount(Stock):
         self.reset_the_account()
         self.deposit_cash(amount)
 
-    def get_price_with_date(self, f, code, date=datetime.date.today()):
+    def get_price_with_date(self, f, code, date=datetime.date.today(), type = 'List'):
         '''
         Get the relevant information of a specific day, defaults today
         :param f: a function take (code, date) as input and return a value
@@ -450,15 +450,18 @@ class StockAccount(Stock):
         :param date: str, date
         :return: float, a price value
         '''
+        now = time.strftime("%X", time.localtime())
         if date != datetime.date.today():
             date = Toolbox.date_encoding(date)
+        if int(now[:1]) < 16:
+            date = date - datetime.timedelta(1)
         if date.weekday() == 5:
             date = date - datetime.timedelta(1)
         elif date.weekday() == 6:
             date = date - datetime.timedelta(2)
         else: pass
         date = Toolbox.date_decoding(date)
-        return f(code, date)
+        return f(code, date, type)
 
     def current_price_list(self):
         '''
@@ -467,9 +470,9 @@ class StockAccount(Stock):
         '''
         current_price_list = []
         for i in self.stock_hold:
-            f = Messenger.get_stock_open_price
+            f = Messenger.get_stock_hist_data
             code = self.select_stock_code(i)
-            close_price = self.get_price_with_date(f, code)
+            close_price = self.get_price_with_date(f, code, type = 'close')
             current_price_list.append(close_price)
         return current_price_list
 

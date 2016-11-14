@@ -21,39 +21,33 @@ def get_stock_outstanding(code):
     outstanding = int(outstanding)
     return outstanding
 
-def get_stock_hist_data(code, date):
+def get_stock_hist_data(code, date, type = ' '):
     '''
     Get the stock's data of a specific day
     :param code: str, stock index
     :param date: str, date
+    :param type: str, specify the value returned
     :return: a list of relevant information
     '''
-    hist = ts.get_k_data(code, start=date, end=date)
-    hist = hist.iloc[0]
-    open = hist.open
-    close = hist.close
-    high = hist.high
-    low = hist.low
-    volume = int(float(hist.volume)) * 100
-    list = (date, code, open, close, high, low, volume)
-    return list
-
-def get_stock_open_price(code, date):
-    '''
-    Get the open price of a specific day
-    :param code: str, stock index
-    :param date: str, date
-    :return: float, open price
-    '''
-    open = get_stock_hist_data(code, date)[2]
-    return open
-
-def get_stock_close_price(code, date):
-    '''
-    Get the close price of a specific day
-    :param code: str, stock index
-    :param date: str, date
-    :return: float, close price
-    '''
-    close = get_stock_hist_data(code, date)[3]
-    return close
+    try:
+        hist = ts.get_k_data(code, start=date, end=date)
+        hist = hist.iloc[0]
+        open = hist.open
+        close = hist.close
+        high = hist.high
+        low = hist.low
+        volume = int(float(hist.volume)) * 100
+        list = (date, code, open, close, high, low, volume)
+        if type == 'open':
+            return list[2]
+        elif type == 'close':
+            return list[3]
+        elif type == 'high':
+            return list[4]
+        elif type == 'low':
+            return list[5]
+        elif type == 'volume':
+            return list[6]
+        else:
+            return list
+    except: pass

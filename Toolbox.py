@@ -1,4 +1,5 @@
 import datetime, time, sys
+import Messenger
 
 
 def date_encoding(date_string):
@@ -39,6 +40,26 @@ def workday_list(days, start_date = ''):
             list.append(day)
             days_valid += 1
         days_count += 1
+    return list
+
+def number_of_days_before(code, days, start_date = ''):
+    '''
+    Generate a list of days when data available for the stock
+    :param code: str, stock index
+    :param days: int, the number of days
+    :param start_date: str, the start date
+    :return: the list of days
+    '''
+    if start_date != '':
+        start_date = date_encoding(start_date)
+    else:
+        start_date = datetime.date.today()
+    list = []
+    while len(list) < days:
+        test = Messenger.get_stock_hist_data(code, date_decoding(start_date))
+        if test != None:
+            list.append(date_decoding(start_date))
+        start_date -= datetime.timedelta(1)
     return list
 
 class TimeStamp:
@@ -117,3 +138,15 @@ def process_monitor(percent):
     if percent == 100:
         print('\r')
 
+def pick_out(list, f):
+    '''
+    Select the extreme value in the list
+    :param list: the list
+    :param f: the function to set the comparison rule
+    :return: the extreme value
+    '''
+    hold = list[0]
+    for i in range(len(list) - 1):
+        if f(list[i], list[i+1]) == True:
+            hold = list[i+1]
+    return hold
