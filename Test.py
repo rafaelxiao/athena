@@ -18,9 +18,9 @@ print(s.balance())
 print(s.current_value_of_account())
 '''
 
-s = Workshop.KDJ()
-z = s.kdj_of_a_period('600313', 25, '2016-11-09')
+s = Engine.MACD()
+z = s.macd_of_a_period('600313', 30)
 # z = s.kdj('600313', smooth=30)
 # z = s.rsv('600313', '2016-11-10')
 for i in z:
- print(i)
+    print(i)

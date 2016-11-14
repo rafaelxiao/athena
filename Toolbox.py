@@ -42,6 +42,7 @@ def workday_list(days, start_date = ''):
         days_count += 1
     return list
 
+# Might cause a infinite loop issue if the code is wrong and nothing returned
 def number_of_days_before(code, days, start_date = ''):
     '''
     Generate a list of days when data available for the stock

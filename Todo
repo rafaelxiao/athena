@@ -1,0 +1,2 @@
+- Toolbox.number_of_days_before have a potential infinite loop issue
+- Deal with the newly listed stocks

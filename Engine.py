@@ -492,3 +492,209 @@ class StockAccount(Stock):
         value = self.value_stock_hold(stock_hold) + self.cash
         return value
 
+class KDJ:
+    '''
+    Perform the kdj computation
+    '''
+
+    def series_of_data(self, code, days=9, start_date=''):
+        '''
+        Generate a series of data for the duration demanded
+        :param code: str, stock index
+        :param days: int, the duration
+        :param start_date: str, the start date
+        :return: a list contains the data for each days
+        '''
+        days_list = Toolbox.number_of_days_before(code, days, start_date)
+        data_list = []
+        for i in days_list:
+            data = Messenger.get_stock_hist_data(code, i)
+            data_list.append(data)
+        return data_list
+
+    def less(self, value1, value2):
+        '''
+        A fuction to return the smaller value
+        :param value1:
+        :param value2:
+        :return: the smaller value
+        '''
+        if float(value2) < float(value1):
+            return True
+
+    def more(self, value1, value2):
+        '''
+        A function to return the larger value
+        :param value1:
+        :param value2:
+        :return: the larger value
+        '''
+        if float(value2) > float(value1):
+            return True
+
+    def rsv(self, code, date='', method=9):
+        '''
+        Calculate the rsv for for the date needed
+        :param code: str, stock index
+        :param date: str, the date of rsv calculated, default today
+        :param method: the range took into the calculation, default 9 days
+        :return: the rsv value
+        '''
+        list = self.series_of_data(code, method, date)
+        extract_list = []
+        for i in list:
+            extract_list += i[2:6]
+        c = float(list[0][3])
+        l = float(Toolbox.pick_out(extract_list, self.less))
+        h = float(Toolbox.pick_out(extract_list, self.more))
+        rsv = (c - l) / (h - l) * 100
+        return rsv
+
+    def kdj(self, code, date='', method=9, smooth=30):
+        '''
+        Return the (k, d, j) given a specific time
+        :param code: str, stock index
+        :param date: str, the date needed
+        :param method: the range took into the calculation, default 9 days
+        :param smooth: the smooth period, default 30 days
+        :return: the value, (k, d, j)
+        '''
+        rsv_list = []
+        days_list = Toolbox.number_of_days_before(code, smooth, date)
+        count = 1
+        for i in days_list:
+            rsv_h = self.rsv(code, i, method)
+            rsv_list.append(rsv_h)
+            Toolbox.process_monitor(count / len(days_list) * 100)
+            count += 1
+        k_line = [50]
+        d_line = [50]
+        for j in rsv_list[::-1]:
+            k_hold = j / 3 + 2 * k_line[-1] / 3
+            k_line.append(k_hold)
+            d_hold = k_line[-1] / 3 + 2 * d_line[-1] / 3
+            d_line.append(d_hold)
+        k = k_line[-1]
+        d = d_line[-1]
+        j = 3 * k - 2 * d
+        return (k, d, j)
+
+    def kdj_of_a_period(self, code, duration, start_date="", method = 9, smooth=30):
+        '''
+        Calculate a series of kdj in a relatively less consuming manner
+        :param code: str, stock index
+        :param duration: int, the duration of the period demanded
+        :param start_date: str, the start date
+        :param method: the range took into calculation, default 9 days
+        :param smooth: the smooth period, default 30 days
+        :return: a series of kdj in a form of (date, (k, d, j))
+        '''
+        rsv_list = []
+        days_list = Toolbox.number_of_days_before(code, smooth + duration, start_date)
+        count = 1
+        for i in days_list:
+            rsv_h = self.rsv(code, i, method)
+            rsv_list.append(rsv_h)
+            Toolbox.process_monitor(count / len(days_list) * 100)
+            count += 1
+        k_line = [50]
+        d_line = [50]
+        for j in rsv_list[::-1]:
+            k_hold = j / 3 + 2 * k_line[-1] / 3
+            k_line.append(k_hold)
+            d_hold = k_line[-1] / 3 + 2 * d_line[-1] / 3
+            d_line.append(d_hold)
+        output_list = []
+        for io in range(duration):
+            date = days_list[::-1][io - duration]
+            k = k_line[io - duration]
+            d = d_line[io - duration]
+            j = 3 * k - 2 * d
+            output_list.append((date, (k, d, j)))
+        return output_list
+
+class MACD:
+
+    '''
+    Perform the calculation related to MACD
+    '''
+
+    def close_price_list(self, code, date, smooth):
+        '''
+        Get the price needed for calculation and return both days list and price list
+        :param code: str, stock index
+        :param date: str, the date
+        :param smooth: int, the period taken into calculation
+        :return: days list and price list
+        '''
+        days_list = Toolbox.number_of_days_before(code, smooth, date)
+        close_price_list = []
+        count = 1
+        for i in days_list:
+            close_price = Messenger.get_stock_hist_data(code, i, type='close')
+            close_price_list.append(close_price)
+            Toolbox.process_monitor(count / len(days_list) * 100)
+            count += 1
+        return (days_list[::-1], close_price_list[::-1])
+
+    def caculate(self, code, date, smooth):
+        '''
+        Caculate the MACD and return the data of all the period
+        :param code: str, the stock index
+        :param date: str, the date
+        :param smooth: int, the smooth period
+        :return: a list of relevant data within the smooth period
+        '''
+        close_price_with_date = self.close_price_list(code, date, smooth)
+        days_list = close_price_with_date[0]
+        close_price_list = close_price_with_date[1]
+        ema_12_list = [0]
+        ema_26_list = [0]
+        dea_list = [0]
+        diff_list = []
+        bar_list = []
+        for i in close_price_list:
+            ema_12 = float(ema_12_list[-1]) * 11 / 13 + float(i) * 2 / 13
+            ema_26 = float(ema_26_list[-1]) * 25 / 27 + float(i) * 2 / 27
+            diff = ema_12 - ema_26
+            dea = dea_list[-1] * 8 / 10 + diff * 2 / 10
+            bar = 2 * (diff - dea)
+            ema_12_list.append(ema_12)
+            ema_26_list.append(ema_26)
+            dea_list.append(dea)
+            diff_list.append(diff)
+            bar_list.append(bar)
+        ema_12_list = ema_12_list[1:]
+        ema_26_list = ema_26_list[1:]
+        dea_list = dea_list[1:]
+        data_list = []
+        for i in range(len(days_list)):
+            # (ema_12, ema_26, diff, dea, bar)
+            data_unit = (days_list[i], (ema_12_list[i], ema_26_list[i], diff_list[i], dea_list[i], bar_list[i]))
+            data_list.append(data_unit)
+        return data_list
+
+    def macd(self, code, date='', smooth=120):
+        '''
+        Return the macd relatives for a specific day
+        :param code: str, the stock code
+        :param date: str, the date
+        :param smooth: int, the smooth period, default 120
+        :return: (macd, diff, dea)
+        '''
+        macd = self.caculate(code, date, smooth)[-1][1]
+        # (macd, diff, dea)
+        return (macd[-1], macd[-3], macd[-2])
+
+    def macd_of_a_period(self, code, duration, date='', smooth=120):
+        '''
+        Calculate the macd for a period in a less consuming fashion
+        :param code: str, the stock code
+        :param duration: int, the days demanded
+        :param date: str, the date
+        :param smooth: int, the smooth period, default 120
+        :return: a list with each unit in (date, (macd, diff, dea))
+        '''
+        calculated_list = self.caculate(code, date, smooth + duration)
+        macd_list = [(i[0], (i[1][-1], i[1][-3], i[1][-2])) for i in calculated_list[-duration:]]
+        return macd_list
