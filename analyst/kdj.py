@@ -1,6 +1,6 @@
 import assistant as at
 import messenger as ms
-
+import threading, queue
 
 class KDJ:
     '''
@@ -17,9 +17,21 @@ class KDJ:
         '''
         days_list = at.opening_days(code, days, start_date)
         data_list = []
+        thread = []
+        q = queue.Queue()
+        def catch(code, date, queque):
+            catch = ms.get_stock_hist_data(code, date)
+            queque.put(catch)
         for i in days_list:
-            data = ms.get_stock_hist_data(code, i)
-            data_list.append(data)
+            t = threading.Thread(target=catch, args=(code, i, q))
+            thread.append(t)
+        for j in thread:
+            j.start()
+        for k in thread:
+            k.join()
+        while not q.empty():
+            data_list.append(q.get())
+        data_list = at.sort_list_by_date(data_list)
         return data_list
 
     def __less__(self, value1, value2):
@@ -54,7 +66,7 @@ class KDJ:
         extract_list = []
         for i in list:
             extract_list += i[2:6]
-        c = float(list[0][3])
+        c = float(list[-1][3])
         l = float(at.pick_out(extract_list, self.__less__))
         h = float(at.pick_out(extract_list, self.__more__))
         rsv = (c - l) / (h - l) * 100
@@ -79,7 +91,7 @@ class KDJ:
             count += 1
         k_line = [50]
         d_line = [50]
-        for j in rsv_list[::-1]:
+        for j in rsv_list:
             k_hold = j / 3 + 2 * k_line[-1] / 3
             k_line.append(k_hold)
             d_hold = k_line[-1] / 3 + 2 * d_line[-1] / 3
@@ -87,6 +99,8 @@ class KDJ:
         k = k_line[-1]
         d = d_line[-1]
         j = 3 * k - 2 * d
+        if j > 100:
+            j = 100
         return (k, d, j)
 
     def kdj_of_a_period(self, code, duration, start_date="", method = 9, smooth=30):
@@ -109,16 +123,18 @@ class KDJ:
             count += 1
         k_line = [50]
         d_line = [50]
-        for j in rsv_list[::-1]:
+        for j in rsv_list:
             k_hold = j / 3 + 2 * k_line[-1] / 3
             k_line.append(k_hold)
             d_hold = k_line[-1] / 3 + 2 * d_line[-1] / 3
             d_line.append(d_hold)
         output_list = []
         for io in range(duration):
-            date = days_list[::-1][io - duration]
+            date = days_list[io - duration]
             k = k_line[io - duration]
             d = d_line[io - duration]
             j = 3 * k - 2 * d
+            if j > 100:
+                j = 100
             output_list.append((date, (k, d, j)))
         return output_list

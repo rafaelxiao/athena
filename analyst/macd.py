@@ -1,5 +1,6 @@
 import assistant as at
 import messenger as ms
+import threading, queue
 
 class MACD:
 
@@ -7,7 +8,7 @@ class MACD:
     Perform the calculation related to MACD
     '''
 
-    def __close_price_list__(self, code, date, smooth):
+    def __close_price_list__(self, code, date, smooth, multi_threads=20):
         '''
         Get the price needed for calculation and return both days list and price list
         :param code: str, stock index
@@ -15,17 +16,34 @@ class MACD:
         :param smooth: int, the period taken into calculation
         :return: days list and price list
         '''
-        days_list = at.opening_days(code, smooth, date)
+        days = (int(smooth / multi_threads) + 1) * multi_threads
+        days_list = at.opening_days(code, days, date)
         close_price_list = []
         count = 1
-        for i in days_list:
-            close_price = ms.get_stock_hist_data(code, i, type='close')
-            close_price_list.append(close_price)
-            at.process_monitor(count / len(days_list) * 100)
+        q = queue.Queue()
+        start_pointer = 0
+        def catch(code, date, stack):
+            hold = ms.get_stock_hist_data(code, date)
+            stack.put(hold)
+        while start_pointer <= len(days_list) - multi_threads:
+            thread = []
+            for i in days_list[start_pointer : start_pointer + multi_threads]:
+                t = threading.Thread(target=catch, args=(code, i, q))
+                thread.append(t)
+            for j in thread:
+                j.start()
+            for k in thread:
+                k.join()
+            at.process_monitor(count / (int(smooth / multi_threads) + 1) * 100)
             count += 1
-        return (days_list[::-1], close_price_list[::-1])
+            start_pointer += multi_threads
+        while not q.empty():
+            close_price_list.append(q.get())
+        close_price_list = at.sort_list_by_date(close_price_list)
+        close_price_list = close_price_list[-smooth:]
+        return close_price_list
 
-    def __calculate__(self, code, date, smooth):
+    def __calculate__(self, code, date, smooth, multi_threads=20):
         '''
         Caculate the MACD and return the data of all the period
         :param code: str, the stock index
@@ -33,9 +51,9 @@ class MACD:
         :param smooth: int, the smooth period
         :return: a list of relevant data within the smooth period
         '''
-        close_price_with_date = self.__close_price_list__(code, date, smooth)
-        days_list = close_price_with_date[0]
-        close_price_list = close_price_with_date[1]
+        close_price_with_date = self.__close_price_list__(code, date, smooth, multi_threads)
+        days_list = [i[0] for i in close_price_with_date]
+        close_price_list = [i[3] for i in close_price_with_date]
         ema_12_list = [0]
         ema_26_list = [0]
         dea_list = [0]
@@ -62,7 +80,7 @@ class MACD:
             data_list.append(data_unit)
         return data_list
 
-    def macd(self, code, date='', smooth=120):
+    def macd(self, code, date='', smooth=120, multi_threads=20):
         '''
         Return the macd relatives for a specific day
         :param code: str, the stock code
@@ -70,11 +88,11 @@ class MACD:
         :param smooth: int, the smooth period, default 120
         :return: (macd, diff, dea)
         '''
-        macd = self.__calculate__(code, date, smooth)[-1][1]
+        macd = self.__calculate__(code, date, smooth, multi_threads)[-1][1]
         # (macd, diff, dea)
         return (macd[-1], macd[-3], macd[-2])
 
-    def macd_of_a_period(self, code, duration, date='', smooth=120):
+    def macd_of_a_period(self, code, duration, date='', smooth=120, multi_threads=20):
         '''
         Calculate the macd for a period in a less consuming fashion
         :param code: str, the stock code
@@ -83,6 +101,6 @@ class MACD:
         :param smooth: int, the smooth period, default 120
         :return: a list with each unit in (date, (macd, diff, dea))
         '''
-        calculated_list = self.__calculate__(code, date, smooth + duration)
+        calculated_list = self.__calculate__(code, date, smooth + duration, multi_threads)
         macd_list = [(i[0], (i[1][-1], i[1][-3], i[1][-2])) for i in calculated_list[-duration:]]
         return macd_list
