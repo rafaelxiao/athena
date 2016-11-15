@@ -1,5 +1,5 @@
-import datetime, time, sys
-import Messenger
+import datetime
+import messenger as ms
 
 
 def date_encoding(date_string):
@@ -42,8 +42,7 @@ def workday_list(days, start_date = ''):
         days_count += 1
     return list
 
-# Might cause a infinite loop issue if the code is wrong and nothing returned
-def number_of_days_before(code, days, start_date = ''):
+def opening_days(code, days, start_date = ''):
     '''
     Generate a list of days when data available for the stock
     :param code: str, stock index
@@ -56,10 +55,14 @@ def number_of_days_before(code, days, start_date = ''):
     else:
         start_date = datetime.date.today()
     list = []
-    while len(list) < days:
-        test = Messenger.get_stock_hist_data(code, date_decoding(start_date))
+    count_none = 0
+    while len(list) < days and count_none < 20:
+        test = ms.get_stock_hist_data(code, date_decoding(start_date))
         if test != None:
             list.append(date_decoding(start_date))
+            count_none = 0
+        else:
+            count_none += 1
         start_date -= datetime.timedelta(1)
     return list
 
@@ -121,33 +124,3 @@ def time_list():
             time_list.append(i)
         i = TS.add_time(i, 1)
     return time_list
-
-def process_monitor(percent):
-    '''
-    Show the process with a bar
-    :param percent: int, the percent completed
-    :return: None
-    '''
-    percent = int(percent)
-    completed = '|'
-    uncompleted = ' '
-    percent_monitor = '  %d%%' %percent
-    bar = completed * percent + uncompleted * (100 - percent) + percent_monitor
-    sys.stdout.write('\r')
-    sys.stdout.write(bar)
-    sys.stdout.flush()
-    if percent == 100:
-        print('\r')
-
-def pick_out(list, f):
-    '''
-    Select the extreme value in the list
-    :param list: the list
-    :param f: the function to set the comparison rule
-    :return: the extreme value
-    '''
-    hold = list[0]
-    for i in range(len(list) - 1):
-        if f(hold, list[i+1]):
-            hold = list[i+1]
-    return hold
