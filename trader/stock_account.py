@@ -86,12 +86,13 @@ class StockAccount(Stock):
 
     def __init__(self):
         '''
-        Initiate the StockAccount, with float represent cash & original_cash, set represent stock hold
+        Initiate the StockAccount, with float represent cash & original cash, set represent stock hold
         :return: None
         '''
         self.__original_cash__ = float()
         self.__cash__ = float()
         self.__stock_hold__ = []
+        self.__log__ = []
 
     def __find_stock__(self, stock):
         '''

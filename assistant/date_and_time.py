@@ -1,4 +1,4 @@
-import datetime, threading, queue
+import datetime
 import messenger as ms
 import assistant as at
 
@@ -43,7 +43,7 @@ def workday_list(days, start_date = ''):
         days_count += 1
     return list
 
-def opening_days(code, days, start_date = '', multi_threads = 20):
+def opening_days(code, days, start_date='', multi_threads = 20):
     '''
     Generate a list of days when data available for the stock
     :param code: str, stock index
@@ -52,33 +52,7 @@ def opening_days(code, days, start_date = '', multi_threads = 20):
     :param multi_threads: int, the number of threads, default 20
     :return: the list of days
     '''
-    if start_date != '':
-        start_date = date_encoding(start_date)
-    else:
-        start_date = datetime.date.today()
-    def record_thread_result(code, date, q, q_n):
-        result = ms.get_stock_hist_data(code, date)
-        if result == None:
-            q_n.put(result)
-        else:
-            q.put(result)
-    q = queue.Queue()
-    q_n = queue.Queue()
-    list = []
-    while q.qsize() < days and q_n.qsize() < days * 2:
-        threads = []
-        for days_back in range(0, multi_threads):
-            day_mark = start_date - datetime.timedelta(days_back)
-            threads.append(threading.Thread(target=record_thread_result, args=(code, date_decoding(day_mark), q, q_n)))
-        for t in threads:
-            t.start()
-        for n in threads:
-            n.join()
-        start_date -= datetime.timedelta(multi_threads)
-    while not q.empty():
-        list.append(q.get())
-    list = at.sort_list_by_date(list)
-    list = list[-days:]
+    list = ms.get_series_hist_data(code, days, start_date, multi_threads)
     list = [i[0] for i in list]
     return list
 

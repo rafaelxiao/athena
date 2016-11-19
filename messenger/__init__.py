@@ -1,1 +1,1 @@
-from messenger.tushare import get_stock_hist_data, get_stock_outstanding, get_tick_data
+from messenger.tushare import get_stock_hist_data, get_stock_outstanding, get_tick_data, get_series_hist_data

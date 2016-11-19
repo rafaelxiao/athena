@@ -69,6 +69,8 @@ class KDJ:
         c = float(list[-1][3])
         l = float(at.pick_out(extract_list, self.__less__))
         h = float(at.pick_out(extract_list, self.__more__))
+        if h - l == 0:
+            return 50
         rsv = (c - l) / (h - l) * 100
         return rsv
 
