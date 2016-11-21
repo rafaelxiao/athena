@@ -1,6 +1,6 @@
 import messenger as ms
 import assistant as at
-import threading, queue
+import threading, queue, os
 import matplotlib.pyplot as plt
 from scipy.stats.stats import pearsonr
 
@@ -13,7 +13,7 @@ reference_price = 'close'
 # The support line  in the graph
 figure_deviation_line = [-1, 0, 1]
 # The smoothing method
-smooth = 9
+smooth = 3
 # The smoothing period
 leading_smooth = 30
 # The default analysis duration
@@ -339,13 +339,18 @@ class PriceDeviation:
         deviation.plot(x_date, y_deviation_up, 'y:')
         deviation.plot(x_date, y_deviation_down, 'y:')
         deviation.plot(x_date, y_deviation_mid, 'y:')
-        price.set_xlabel("%s %s" %(code, list[0][0]))
+        price.set_xlabel("%s %s %i" %(code, list[-1][0], smooth))
         price.set_ylabel('price', color='b')
         deviation.set_ylabel('deviation', color='g')
         if type == "show":
             plt.show()
         if type == "save":
-            plt.savefig('%s - %s.png'%(code, list[0][0]))
+            try:
+                os.mkdir(os.path.join(os.getcwd(), 'graph'))
+            except:
+                pass
+            path = os.path.join(os.getcwd(), 'graph/%s-%s-%i.png'%(code, list[-1][0], smooth))
+            plt.savefig(path)
 
 
 

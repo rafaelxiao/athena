@@ -1,8 +1,11 @@
 import tushare as ts
 import assistant as at
+import pandas as pd
+import messenger as ms
 import datetime, threading, queue, os
 
-basic_csv = 'basic.csv'
+basics_csv = 'messenger/basics.csv'
+board_type = {'sh': ['600', '601', '603'], 'sz': ['000'], 'cyb': ['300'], 'zxb': ['002']}
 
 def get_tick_data(code, date):
     '''
@@ -14,26 +17,41 @@ def get_tick_data(code, date):
     tick_data = ts.get_tick_data(code, date)
     return tick_data
 
+def get_stock_basics():
+    '''
+    Get the stock basic information
+    :return: None
+    '''
+    path = os.path.join(os.path.pardir, basics_csv)
+    try:
+        basics = ts.get_stock_basics()
+        basics.to_csv(path)
+    except:
+        basics = pd.read_csv(path)
+    return basics
+
 def get_stock_outstanding(code):
     '''
     Get the stock outstanding
     :param code: string, stock index
+    :param save: int, specifying weather catch the basics to local
     :return: the share outstandings
     '''
-    # outstanding = ts.get_stock_basics().ix[code].outstanding
-    # outstanding = outstanding * 10000
-    # outstanding = int(outstanding)
-    # return outstanding
-    return 1338000000
+    outstanding = ms.get_stock_basics().ix[code].outstanding
+    outstanding = outstanding * 10000
+    outstanding = int(outstanding)
+    return outstanding
 
-def save_basic():
+def get_stock_code_by_type(type):
     '''
-    Save the stock basics into a csv file
-    :return:
+    Return a list of stock index in a specific group
+    :param type: str, the board type
+    :return: a list of index
     '''
-    basic = ts.get_stock_basics()
-    path = os.path.join(basic_csv)
-    basic.to_csv(path)
+    path = os.path.join(os.path.pardir, basics_csv)
+    basics = pd.read_csv(path, dtype='str')
+    basics = basics.code[basics.code.str[:3].isin(board_type[type])]
+    return basics.tolist()
 
 def get_stock_hist_data(code, date, type = ' '):
     '''
