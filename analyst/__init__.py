@@ -5,3 +5,5 @@ from analyst.kdj import KDJ
 from analyst.macd import MACD
 
 from analyst.smart_money import SmartMoney
+
+from analyst.price_deviation import PriceDeviation

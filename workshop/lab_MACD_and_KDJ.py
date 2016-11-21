@@ -1,42 +1,5 @@
-'''
-start = time.clock()
-s = lab.MACDWithKDJ()
-z = s.__macd_and_kdj_list__('600313', 20, '2016-11-10')
-# z = s.__macd__('600313', 20, '2016-11-10')
-for i in z:
-    print(i)
-end = time.clock()
-print("read: %f s"% (end - start))
-'''
-'''
-s = ms.get_series_hist_data('002466',500)
-z = al.MACD().macd_of_a_period('002466', 500)
-# y = al.KDJ().kdj_of_a_period('002466', 500)
-h = 0
-list = []
-for i in range(len(s)):
-    date = s[i][0]
-    macd = z[i][1][0]
-    h += macd * 100
-    unit = (date, macd, h)
-    list.append(unit)
-
-
-list = []
-for i in range(len(s)):
-    date = s[i][0]
-    price = s[i][3]
-    macd = z[i][1][0]
-    d = y[i][1][1]
-    j = y[i][1][2]
-    unit = (date, float(price) / macd, j - d, d, j)
-    list.append(unit)
-
-for i in list:
-    # if (i[1] < 200 and i[1] > 0) and i[2] > 10 and i[3] < 40 and i[4] > h[4]:
-        print(i)
-'''
-
+import trader as tr
+import analyst as al
 
 class MACDWithKDJ():
 

@@ -1,6 +1,8 @@
 import tushare as ts
 import assistant as at
-import datetime, threading, queue
+import datetime, threading, queue, os
+
+basic_csv = 'basic.csv'
 
 def get_tick_data(code, date):
     '''
@@ -18,10 +20,20 @@ def get_stock_outstanding(code):
     :param code: string, stock index
     :return: the share outstandings
     '''
-    outstanding = ts.get_stock_basics().ix[code].outstanding
-    outstanding = outstanding * 10000
-    outstanding = int(outstanding)
-    return outstanding
+    # outstanding = ts.get_stock_basics().ix[code].outstanding
+    # outstanding = outstanding * 10000
+    # outstanding = int(outstanding)
+    # return outstanding
+    return 1338000000
+
+def save_basic():
+    '''
+    Save the stock basics into a csv file
+    :return:
+    '''
+    basic = ts.get_stock_basics()
+    path = os.path.join(basic_csv)
+    basic.to_csv(path)
 
 def get_stock_hist_data(code, date, type = ' '):
     '''
