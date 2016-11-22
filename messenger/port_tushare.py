@@ -4,7 +4,7 @@ import pandas as pd
 import messenger as ms
 import datetime, threading, queue, os
 
-basics_csv = 'messenger/basics.csv'
+basics_csv = 'basics.csv'
 board_type = {'sh': ['600', '601', '603'], 'sz': ['000'], 'cyb': ['300'], 'zxb': ['002']}
 
 def get_tick_data(code, date):
@@ -22,10 +22,10 @@ def get_stock_basics():
     Get the stock basic information
     :return: None
     '''
-    path = os.path.join(os.path.pardir, basics_csv)
+    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), basics_csv))
     try:
         basics = ts.get_stock_basics()
-        basics.to_csv(path)
+        basics.to_csv(path, encoding='utf-8')
     except:
         basics = pd.read_csv(path)
     return basics
@@ -48,7 +48,7 @@ def get_stock_code_by_type(type):
     :param type: str, the board type
     :return: a list of index
     '''
-    path = os.path.join(os.path.pardir, basics_csv)
+    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), basics_csv))
     basics = pd.read_csv(path, dtype='str')
     basics = basics.code[basics.code.str[:3].isin(board_type[type])]
     return basics.tolist()

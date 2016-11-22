@@ -1,6 +1,6 @@
 import messenger as ms
 import assistant as at
-import threading, queue, os
+import threading, queue, os, math
 import matplotlib.pyplot as plt
 from scipy.stats.stats import pearsonr
 
@@ -11,7 +11,7 @@ hist_type = {'date': 0, 'code': 1, 'open': 2, 'close': 3, 'high': 4, 'low': 5, '
 # The price used for calculation of the percent changed
 reference_price = 'close'
 # The support line  in the graph
-figure_deviation_line = [-1, 0, 1]
+figure_deviation_line = [-2, -1, 0, 1, 2]
 # The smoothing method
 smooth = 3
 # The smoothing period
@@ -20,6 +20,10 @@ leading_smooth = 30
 default_range = 30
 # The number of threads used when fetching data
 threads_of_catch = 20
+# The graph height in hundred pixels
+graph_height = 10
+# Enlarge the oscillation
+enlarge_osci = 3
 
 
 class PriceDeviation:
@@ -207,7 +211,7 @@ class PriceDeviation:
         :param smooth: int, the smooth method
         :param leading_smooth: int, the leading smooth period
         :param threads: int, the number of threads used
-        :return: a list in form of (date, code, open, close, actual_percent, theoretical_percent, diff_percent])
+        :return: a list in form of (date, code, open, close, actual_percent, theoretical_percent, diff_percent, smoothed_theoretical, smoothed_diff)
         '''
         def catch(code, date, outstanding, f, queue):
             content = f(code, date, outstanding)
@@ -248,9 +252,12 @@ class PriceDeviation:
             c_diff = self.__price_diff_percentage__(io[7], reference_h)
             percent_list.append([c_date, c_code, open, close, c_actual_change, c_theoretical_change, c_diff])
             reference_h = io[4]
+        smoothed_theoretical = [i[-2] for i in percent_list]
         smoothed_change = [i[-1] for i in percent_list]
+        smoothed_theoretical = self.__smooth__(smoothed_theoretical, smooth)
         smoothed_change = self.__smooth__(smoothed_change, smooth)
         for ip in range(len(percent_list)):
+            percent_list[ip].append(smoothed_theoretical[ip])
             percent_list[ip].append(smoothed_change[ip])
         return percent_list[-duration:]
 
@@ -259,14 +266,16 @@ class PriceDeviation:
         Show the difference in percent between actual and theoretical price
         :param code: str, stock index
         :param date: str, date
-        :return: the difference in percent
+        :return: the theoretical price change percent and percent of difference
         '''
         date = self.__opening_dates__(code, 1, date)
         list = self.__measure_diff__(code, date)
         reference_price = list[4]
+        theo_change = list[6]
         diff = list[7]
+        theo_change_percent = self.__price_diff_percentage__(theo_change, reference_price)
         diff_percent = self.__price_diff_percentage__(diff, reference_price)
-        return diff_percent
+        return (theo_change_percent, diff_percent)
 
     def show_difference_list(self, code, date='', duration=default_range, smooth = smooth, leading_smooth=leading_smooth, threads=threads_of_catch):
         '''
@@ -286,8 +295,9 @@ class PriceDeviation:
             o_date = i[0]
             o_code = i[1]
             o_close = i[3]
-            o_diff_percent = i[7]
-            output_list.append((o_date, o_code, o_close, o_diff_percent))
+            o_theoretical_percent = i[7]
+            o_diff_percent = i[8]
+            output_list.append((o_date, o_code, o_close, o_theoretical_percent, o_diff_percent))
         return output_list
 
     def show_correlation(self, code, trace_back = 1, date='', duration=default_range, smooth = smooth, leading_smooth=leading_smooth, threads=threads_of_catch):
@@ -312,7 +322,7 @@ class PriceDeviation:
         y = [float(i[3]) for i in list[trace_back:]]
         return pearsonr(x, y)
 
-    def plot_difference(self, code, date='', duration=default_range, smooth = smooth, leading_smooth=leading_smooth, threads=threads_of_catch, type='show'):
+    def plot_difference(self, code, date='', duration=default_range, smooth = smooth, leading_smooth=leading_smooth, threads=threads_of_catch, type='show', height = graph_height):
         '''
         Plot the difference with price
         :param code: str, stock index
@@ -328,17 +338,18 @@ class PriceDeviation:
         list = self.__diff_lists__(code, date, duration, smooth, leading_smooth, threads)
         x_date = [at.date_encoding(i[0]) for i in list]
         y_price = [i[3] for i in list]
-        y_deviation = [i[7] for i in list]
-        y_deviation_mid = [figure_deviation_line[1] for i in list]
-        y_deviation_up = [figure_deviation_line[2] for i in list]
-        y_deviation_down = [figure_deviation_line[0] for i in list]
+        y_theoretical = [i[7] * enlarge_osci for i in list]
+        y_deviation = [i[8] for i in list]
+        support_line = []
+        for i in range(len(figure_deviation_line)):
+            support_line.append([figure_deviation_line[i] for k in list])
         fig, price = plt.subplots()
         deviation = price.twinx()
         price.plot(x_date, y_price, 'b-')
+        deviation.plot(x_date, y_theoretical, 'y-.')
         deviation.plot(x_date, y_deviation, 'g--')
-        deviation.plot(x_date, y_deviation_up, 'y:')
-        deviation.plot(x_date, y_deviation_down, 'y:')
-        deviation.plot(x_date, y_deviation_mid, 'y:')
+        for j in support_line:
+            deviation.plot(x_date, j, 'y:')
         price.set_xlabel("%s %s %i" %(code, list[-1][0], smooth))
         price.set_ylabel('price', color='b')
         deviation.set_ylabel('deviation', color='g')
@@ -350,6 +361,7 @@ class PriceDeviation:
             except:
                 pass
             path = os.path.join(os.getcwd(), 'graph/%s-%s-%i.png'%(code, list[-1][0], smooth))
+            fig.set_size_inches(math.sqrt(int(duration)) * height / 3, height)
             plt.savefig(path)
 
 
