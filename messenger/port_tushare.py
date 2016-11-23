@@ -6,6 +6,8 @@ import datetime, threading, queue, os
 
 basics_csv = 'basics.csv'
 board_type = {'sh': ['600', '601', '603'], 'sz': ['000'], 'cyb': ['300'], 'zxb': ['002']}
+outstanding_multiple = 100000
+volume_multiple = 100
 
 def get_tick_data(code, date):
     '''
@@ -38,7 +40,7 @@ def get_stock_outstanding(code):
     :return: the share outstandings
     '''
     outstanding = ms.get_stock_basics().ix[code].outstanding
-    outstanding = outstanding * 10000
+    outstanding = outstanding * outstanding_multiple
     outstanding = int(outstanding)
     return outstanding
 
@@ -53,7 +55,7 @@ def get_stock_code_by_type(type):
     basics = basics.code[basics.code.str[:3].isin(board_type[type])]
     return basics.tolist()
 
-def get_stock_hist_data(code, date, type = ' '):
+def get_stock_hist_data(code, date, type=''):
     '''
     Get the stock's data of a specific day
     :param code: str, stock index
@@ -68,7 +70,7 @@ def get_stock_hist_data(code, date, type = ' '):
         close = hist.close
         high = hist.high
         low = hist.low
-        volume = int(float(hist.volume)) * 100
+        volume = int(float(hist.volume)) * volume_multiple
         list = (date, code, open, close, high, low, volume)
         if type == 'open':
             return list[2]
@@ -83,6 +85,17 @@ def get_stock_hist_data(code, date, type = ' '):
         else:
             return list
     except: pass
+
+def get_stock_hist_data_yesterday(code, date_t, type=''):
+    '''
+    Get the stock's data of the previous day of a specific day
+    :param code: str, stock index
+    :param date: str, date
+    :param type: str, specify the value returned
+    :return: a list of relevant information
+    '''
+    date = at.opening_days(code, 2, date_t)[0]
+    return ms.get_stock_hist_data(code, date, type)
 
 def get_series_hist_data(code, days, start_date = '', multi_threads = 20):
     '''

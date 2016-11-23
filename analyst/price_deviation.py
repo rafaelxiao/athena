@@ -22,8 +22,10 @@ default_range = 30
 threads_of_catch = 20
 # The graph height in hundred pixels
 graph_height = 10
-# Enlarge the oscillation
-enlarge_osci = 3
+# A warning displayed when data is incomplete
+the_warning = 'Data corrupted'
+# Use yesterday's close price when values 1, instead of today's open price
+yesterday_close = 1
 
 
 class PriceDeviation:
@@ -54,9 +56,15 @@ class PriceDeviation:
         :param hist: list in form (date, code, open, close, high, low, volume)
         :return: the price change
         '''
-        open = float(hist[hist_type['open']])
-        close = float(hist[hist_type['close']])
-        return (close - open)
+        if yesterday_close == 1:
+            hist_y = ms.get_stock_hist_data_yesterday(hist[1], hist[0])
+            close_yesterday = float(hist_y[hist_type['close']])
+            close = float(hist[hist_type['close']])
+            return (close - close_yesterday)
+        else:
+            open = float(hist[hist_type['open']])
+            close = float(hist[hist_type['close']])
+            return (close - open)
 
     def __reference_price__(self, hist):
         '''
@@ -211,7 +219,7 @@ class PriceDeviation:
         :param smooth: int, the smooth method
         :param leading_smooth: int, the leading smooth period
         :param threads: int, the number of threads used
-        :return: a list in form of (date, code, open, close, actual_percent, theoretical_percent, diff_percent, smoothed_theoretical, smoothed_diff)
+        :return: a list in form of (date, code, open, close, actual_percent, theoretical_percent, diff_percent, smoothed_actual, smoothed_theoretical, smoothed_diff)
         '''
         def catch(code, date, outstanding, f, queue):
             content = f(code, date, outstanding)
@@ -239,43 +247,49 @@ class PriceDeviation:
             origin_list.append(q.get())
         origin_list = at.sort_list_by_date(origin_list)
         # Re-construct for the final output list
-        percent_list = []
-        reference_h = origin_list[0][4]
-        for io in origin_list:
-            # (date, code, open, close, reference, actual_change, theoretical_change, diff)
-            c_date = io[0]
-            c_code = io[1]
-            open = io[2]
-            close = io[3]
-            c_actual_change = self.__price_diff_percentage__(io[5], reference_h)
-            c_theoretical_change = self.__price_diff_percentage__(io[6], reference_h)
-            c_diff = self.__price_diff_percentage__(io[7], reference_h)
-            percent_list.append([c_date, c_code, open, close, c_actual_change, c_theoretical_change, c_diff])
-            reference_h = io[4]
-        smoothed_theoretical = [i[-2] for i in percent_list]
-        smoothed_change = [i[-1] for i in percent_list]
-        smoothed_theoretical = self.__smooth__(smoothed_theoretical, smooth)
-        smoothed_change = self.__smooth__(smoothed_change, smooth)
-        for ip in range(len(percent_list)):
-            percent_list[ip].append(smoothed_theoretical[ip])
-            percent_list[ip].append(smoothed_change[ip])
-        return percent_list[-duration:]
+        if len(origin_list) > 0:
+            percent_list = []
+            reference_h = origin_list[0][4]
+            for io in origin_list:
+                # (date, code, open, close, reference, actual_change, theoretical_change, diff)
+                c_date = io[0]
+                c_code = io[1]
+                open = io[2]
+                close = io[3]
+                c_actual_change = self.__price_diff_percentage__(io[5], reference_h)
+                c_theoretical_change = self.__price_diff_percentage__(io[6], reference_h)
+                c_diff = self.__price_diff_percentage__(io[7], reference_h)
+                percent_list.append([c_date, c_code, open, close, c_actual_change, c_theoretical_change, c_diff])
+                reference_h = io[4]
+            smoothed_theoretical = [i[-2] for i in percent_list]
+            smoothed_actual = [i[-3] for i in percent_list]
+            smoothed_change = [i[-1] for i in percent_list]
+            smoothed_theoretical = self.__smooth__(smoothed_theoretical, smooth)
+            smoothed_change = self.__smooth__(smoothed_change, smooth)
+            for ip in range(len(percent_list)):
+                percent_list[ip].append(smoothed_actual[ip])
+                percent_list[ip].append(smoothed_theoretical[ip])
+                percent_list[ip].append(smoothed_change[ip])
+            return percent_list[-duration:]
+        else: return None
 
     def show_difference(self, code, date=''):
         '''
         Show the difference in percent between actual and theoretical price
         :param code: str, stock index
         :param date: str, date
-        :return: the theoretical price change percent and percent of difference
+        :return: the actual price change percent, theoretical price change percent and percent of difference
         '''
         date = self.__opening_dates__(code, 1, date)
         list = self.__measure_diff__(code, date)
         reference_price = list[4]
         theo_change = list[6]
+        actual_change = list[5]
         diff = list[7]
         theo_change_percent = self.__price_diff_percentage__(theo_change, reference_price)
+        actual_change_percent = self.__price_diff_percentage__(actual_change, reference_price)
         diff_percent = self.__price_diff_percentage__(diff, reference_price)
-        return (theo_change_percent, diff_percent)
+        return (actual_change_percent, theo_change_percent, diff_percent)
 
     def show_difference_list(self, code, date='', duration=default_range, smooth = smooth, leading_smooth=leading_smooth, threads=threads_of_catch):
         '''
@@ -286,19 +300,21 @@ class PriceDeviation:
         :param smooth: int, the smooth method
         :param leading_smooth: int, the leading smooth period
         :param threads: int, the number of threads used
-        :return: a list in form (date, code, close_price, diff_percent)
+        :return: a list in form (date, code, close_price, actual_percent, theoretical_percent, diff_percent)
         '''
         #(date, code, open, close, actual, theoretical, diff, smoothed)
         list = self.__diff_lists__(code, date, duration, smooth, leading_smooth, threads)
         output_list = []
-        for i in list:
-            o_date = i[0]
-            o_code = i[1]
-            o_close = i[3]
-            o_theoretical_percent = i[7]
-            o_diff_percent = i[8]
-            output_list.append((o_date, o_code, o_close, o_theoretical_percent, o_diff_percent))
-        return output_list
+        if list != None:
+            for i in range(len(list)):
+                o_date = list[i][0]
+                o_code = list[i][1]
+                o_close = list[i][3]
+                o_diff_percent = list[i][9]
+                output_list.append((o_date, o_code, o_close, o_diff_percent))
+            return output_list
+        else:
+            print(the_warning)
 
     def show_correlation(self, code, trace_back = 1, date='', duration=default_range, smooth = smooth, leading_smooth=leading_smooth, threads=threads_of_catch):
         '''
@@ -336,33 +352,37 @@ class PriceDeviation:
         '''
         #(date, code, open, close, actual, theoretical, diff, smoothed)
         list = self.__diff_lists__(code, date, duration, smooth, leading_smooth, threads)
-        x_date = [at.date_encoding(i[0]) for i in list]
-        y_price = [i[3] for i in list]
-        y_theoretical = [i[7] * enlarge_osci for i in list]
-        y_deviation = [i[8] for i in list]
-        support_line = []
-        for i in range(len(figure_deviation_line)):
-            support_line.append([figure_deviation_line[i] for k in list])
-        fig, price = plt.subplots()
-        deviation = price.twinx()
-        price.plot(x_date, y_price, 'b-')
-        deviation.plot(x_date, y_theoretical, 'y-.')
-        deviation.plot(x_date, y_deviation, 'g--')
-        for j in support_line:
-            deviation.plot(x_date, j, 'y:')
-        price.set_xlabel("%s %s %i" %(code, list[-1][0], smooth))
-        price.set_ylabel('price', color='b')
-        deviation.set_ylabel('deviation', color='g')
-        if type == "show":
-            plt.show()
-        if type == "save":
-            try:
-                os.mkdir(os.path.join(os.getcwd(), 'graph'))
-            except:
-                pass
-            path = os.path.join(os.getcwd(), 'graph/%s-%s-%i.png'%(code, list[-1][0], smooth))
-            fig.set_size_inches(math.sqrt(int(duration)) * height / 3, height)
-            plt.savefig(path)
-
+        if list != None:
+            x_date = [at.date_encoding(i[0]) for i in list]
+            y_price = [i[3] for i in list]
+            y_deviation = [i[9] for i in list]
+            y_theo = [i[8] for i in list]
+            osci_enlarger = int((max(y_deviation) - min(y_deviation)) / (max(y_theo) - min(y_theo)) * 0.8)
+            y_theo = [i * osci_enlarger for i in y_theo]
+            support_line = []
+            for i in range(len(figure_deviation_line)):
+                support_line.append([figure_deviation_line[i] for k in list])
+            fig, price = plt.subplots()
+            deviation = price.twinx()
+            price.plot(x_date, y_price, 'b-')
+            deviation.plot(x_date, y_deviation, 'g--')
+            deviation.plot(x_date, y_theo, 'y--')
+            for j in support_line:
+                deviation.plot(x_date, j, 'y:')
+            price.set_xlabel("%s %s %i %i" %(code, list[-1][0], smooth, osci_enlarger))
+            price.set_ylabel('price', color='b')
+            deviation.set_ylabel('deviation', color='g')
+            if type == "show":
+                plt.show()
+            if type == "save":
+                try:
+                    os.mkdir(os.path.join(os.getcwd(), 'graph'))
+                except:
+                    pass
+                path = os.path.join(os.getcwd(), 'graph/%s-%s-%i-%i.png'%(code, list[-1][0], duration, smooth))
+                fig.set_size_inches(math.sqrt(int(duration)) * height / 3, height)
+                plt.savefig(path)
+        else:
+            print(the_warning)
 
 
