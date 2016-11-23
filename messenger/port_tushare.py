@@ -6,7 +6,8 @@ import datetime, threading, queue, os
 
 basics_csv = 'basics.csv'
 board_type = {'sh': ['600', '601', '603'], 'sz': ['000'], 'cyb': ['300'], 'zxb': ['002']}
-outstanding_multiple = 100000
+outstanding_multiple = [100000000, 100000]
+largest_outstanding = 2000
 volume_multiple = 100
 
 def get_tick_data(code, date):
@@ -29,7 +30,8 @@ def get_stock_basics():
         basics = ts.get_stock_basics()
         basics.to_csv(path, encoding='utf-8')
     except:
-        basics = pd.read_csv(path)
+        basics = pd.read_csv(path, dtype=object)
+        basics = basics.set_index('code')
     return basics
 
 def get_stock_outstanding(code):
@@ -40,7 +42,11 @@ def get_stock_outstanding(code):
     :return: the share outstandings
     '''
     outstanding = ms.get_stock_basics().ix[code].outstanding
-    outstanding = outstanding * outstanding_multiple
+    if '.' in str(outstanding) and float(outstanding) <= float(largest_outstanding):
+        multiple = outstanding_multiple[0]
+    else:
+        multiple = outstanding_multiple[1]
+    outstanding = float(outstanding) * multiple
     outstanding = int(outstanding)
     return outstanding
 

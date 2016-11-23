@@ -23,3 +23,17 @@ def periodic_auction_scanner(code, days, start_date=''):
         at.process_monitor(count / len(days_list) * 100)
         count += 1
     return content_list
+
+def list_for_price_deviation(list, date='', duration=90):
+    '''
+    For a collection of intrested stocks, plot the price deviation graph and save figures
+    :param list: a list of stock code
+    :param date: str, date
+    :param duration: int, duration
+    :return: None
+    '''
+    h = al.PriceDeviation()
+    valid_code = ms.get_stock_basics().index.values.tolist()
+    for i in list:
+        if i in valid_code:
+            h.plot_difference(i, date, duration, type='save')
