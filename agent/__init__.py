@@ -1,1 +1,1 @@
-from agent.agent import periodic_auction_scanner, list_for_price_deviation
+from agent.agent import periodic_auction_scanner, list_for_price_deviation, peak_scanner

@@ -310,8 +310,9 @@ class PriceDeviation:
                 o_date = list[i][0]
                 o_code = list[i][1]
                 o_close = list[i][3]
-                o_diff_percent = list[i][9]
-                output_list.append((o_date, o_code, o_close, o_diff_percent))
+                o_theo_smoothed = list[i][8]
+                o_diff_smoothed = list[i][9]
+                output_list.append((o_date, o_code, o_close, o_theo_smoothed, o_diff_smoothed))
             return output_list
         else:
             print(the_warning)

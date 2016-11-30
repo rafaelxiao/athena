@@ -61,6 +61,16 @@ def get_stock_code_by_type(type):
     basics = basics.code[basics.code.str[:3].isin(board_type[type])]
     return basics.tolist()
 
+def complete_stock_list():
+    '''
+    Generate a complete list of stock
+    :return: A list of stock
+    '''
+    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), basics_csv))
+    list = pd.read_csv(path, dtype='str')
+    list = list.code.tolist()
+    return list
+
 def get_stock_hist_data(code, date, type=''):
     '''
     Get the stock's data of a specific day
