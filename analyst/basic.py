@@ -1,5 +1,6 @@
 import math
 import messenger as ms
+import assistant as at
 
 def turnover(volume, code):
     '''
@@ -20,6 +21,9 @@ def periodic_auction_volume(code, date):
     :return: int, the volume
     '''
     tick_data = ms.get_tick_data(code, date)
+    while str(tick_data.ix[0].tolist()[-1]) == 'nan':
+        date = at.opening_days(days=2)[0]
+        tick_data = ms.get_tick_data(code, date)
     volume = tick_data[-1:].volume.values[0]
     if math.isnan(volume):
         volume = 0

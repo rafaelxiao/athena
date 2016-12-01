@@ -2,6 +2,8 @@ import datetime
 import messenger as ms
 import assistant as at
 
+# The stock index to generate openning days
+opening_days_tester = '399300'
 
 def date_encoding(date_string):
     '''
@@ -43,7 +45,7 @@ def workday_list(days, start_date = ''):
         days_count += 1
     return list
 
-def opening_days(code, days, start_date='', multi_threads = 20):
+def opening_days(code=opening_days_tester, days=10, start_date='', multi_threads = 20):
     '''
     Generate a list of days when data available for the stock
     :param code: str, stock index
