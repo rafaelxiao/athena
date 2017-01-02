@@ -20,18 +20,22 @@ def get_tick_data(code, date):
     tick_data = ts.get_tick_data(code, date)
     return tick_data
 
-def get_stock_basics():
+def get_stock_basics(local = False):
     '''
     Get the stock basic information
     :return: None
     '''
     path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), basics_csv))
-    try:
-        basics = ts.get_stock_basics()
-        basics.to_csv(path, encoding='utf-8')
-    except:
+    if local == True:
         basics = pd.read_csv(path, dtype=object)
         basics = basics.set_index('code')
+    else:
+        try:
+            basics = ts.get_stock_basics()
+            basics.to_csv(path, encoding='utf-8')
+        except:
+            basics = pd.read_csv(path, dtype=object)
+            basics = basics.set_index('code')
     return basics
 
 def get_stock_outstanding(code):
@@ -41,7 +45,7 @@ def get_stock_outstanding(code):
     :param save: int, specifying weather catch the basics to local
     :return: the share outstandings
     '''
-    outstanding = ms.get_stock_basics().ix[code].outstanding
+    outstanding = ms.get_stock_basics(True).ix[code].outstanding
     if '.' in str(outstanding) and float(outstanding) <= float(largest_outstanding):
         multiple = outstanding_multiple[0]
     else:

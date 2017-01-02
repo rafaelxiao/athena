@@ -201,7 +201,9 @@ class PriceDeviation:
             outstanding = outstanding_q.get()
         actual_change = self.__price_change__(hist)
         if outstanding != 0:
-            theoretical_change = self.__net_cash_flow__(tick) / outstanding
+            volume = float(hist[6])
+            turnover = float(volume / outstanding)
+            theoretical_change = self.__net_cash_flow__(tick) * (-math.log(turnover, math.e) + 1) / outstanding
         else:
             theoretical_change = float(0)
         open = hist[2]
@@ -358,8 +360,8 @@ class PriceDeviation:
             y_price = [i[3] for i in list]
             y_deviation = [i[9] for i in list]
             y_theo = [i[8] for i in list]
-            osci_enlarger = int((max(y_deviation) - min(y_deviation)) / (max(y_theo) - min(y_theo)) * 0.8)
-            y_theo = [i * osci_enlarger for i in y_theo]
+            # osci_enlarger = int((max(y_deviation) - min(y_deviation)) / (max(y_theo) - min(y_theo)) * 0.8)
+            y_theo = [i for i in y_theo]
             support_line = []
             for i in range(len(figure_deviation_line)):
                 support_line.append([figure_deviation_line[i] for k in list])
@@ -370,7 +372,7 @@ class PriceDeviation:
             deviation.plot(x_date, y_theo, 'y--')
             for j in support_line:
                 deviation.plot(x_date, j, 'y:')
-            price.set_xlabel("%s %s %i %i" %(code, list[-1][0], smooth, osci_enlarger))
+            price.set_xlabel("%s %s %i" %(code, list[-1][0], smooth))
             price.set_ylabel('price', color='b')
             deviation.set_ylabel('deviation', color='g')
             if type == "show":
