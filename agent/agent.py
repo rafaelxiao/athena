@@ -44,7 +44,7 @@ def list_for_price_deviation(list, date='', duration=90):
     valid_code = ms.get_stock_basics().index.values.tolist()
     for i in list:
         if i in valid_code:
-            h.plot_difference(i, date, duration, type='save')
+            h.plot_difference(i, date, duration, type='save', smooth=3)
 
 
 

@@ -54,6 +54,22 @@ def get_stock_outstanding(code):
     outstanding = int(outstanding)
     return outstanding
 
+def get_stock_total_shares(code):
+    '''
+    Get the stock total shares
+    :param code: string, stock index
+    :param save: int, specifying weather catch the basics to local
+    :return: the total shares
+    '''
+    totals = ms.get_stock_basics(True).ix[code].totals
+    if '.' in str(totals) and float(totals) <= float(largest_outstanding):
+        multiple = outstanding_multiple[0]
+    else:
+        multiple = outstanding_multiple[1]
+    totals = float(totals) * multiple
+    totals = int(totals)
+    return totals
+
 def get_stock_code_by_type(type):
     '''
     Return a list of stock index in a specific group
@@ -154,3 +170,37 @@ def get_series_hist_data(code, days, start_date = '', multi_threads = 20):
     list = at.sort_list_by_date(list)
     list = list[-days:]
     return list
+
+def get_stock_basics_dict(code):
+    '''
+    Return the stock basics in a dict
+    :param code: str, stock index
+    :return: a index
+    '''
+    content_list = ms.get_stock_basics(True).ix[code].to_dict()
+    content_list['totals'] = ms.get_stock_total_shares(code)
+    content_list['outstanding'] = ms.get_stock_outstanding(code)
+    return content_list
+
+def get_stock_report(code, year, quarter, type):
+    '''
+    Return the dict of inquired data
+    :param code: str, stock index
+    :param year: int, year
+    :param quarter: int, quarter
+    :param type: 'report', 'profit', 'operation', 'growth', 'debt', 'cash_flow'
+    :return: the dict
+    '''
+    function_list = {
+        'report': ts.get_report_data,
+        'profit': ts.get_profit_data,
+        'operation': ts.get_operation_data,
+        'growth': ts.get_growth_data,
+        'debt':ts.get_debtpaying_data,
+        'cash_flow':ts.get_cashflow_data,
+    }
+    try:
+        content_list = function_list[type](year, quarter).set_index('code').ix[code].to_dict()
+        return content_list
+    except:
+        pass

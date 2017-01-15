@@ -5,7 +5,7 @@ import messenger as ms
 import matplotlib.pyplot as plt
 import random
 
-def tick_structure(code, date, bar):
+def tick_structure(code, date, bar=10):
     # Subset big and small
     def subset_big_and_small(tick, thread, type):
         if type == 'big':
@@ -20,8 +20,7 @@ def tick_structure(code, date, bar):
             return tick[tick.type == '卖盘']
     try:
         tick = ms.get_tick_data(code, date)
-        # thread = int(tick.amount.quantile(1 - bar))
-        thread = tick.sort_values('amount', ascending = False).head(10)['amount'].iloc[-1]
+        thread = tick.sort_values('amount', ascending = False).head(bar)['amount'].iloc[-1]
         outstanding = ms.get_stock_outstanding(code)
         total_volume = tick.volume.sum() * 100
         turnover = total_volume / outstanding * 100
@@ -31,19 +30,12 @@ def tick_structure(code, date, bar):
         big_sell_volume = subset_buy_and_sell(big, 'sell').volume.sum()
         small_buy_volume = subset_buy_and_sell(small, 'buy').volume.sum()
         small_sell_volume = subset_buy_and_sell(small, 'sell').volume.sum()
-        big_buy_amount = subset_buy_and_sell(big, 'buy').amount.sum()
-        big_sell_amount = subset_buy_and_sell(big, 'sell').amount.sum()
-        small_buy_amount = subset_buy_and_sell(small, 'buy').amount.sum()
-        small_sell_amount = subset_buy_and_sell(small, 'sell').amount.sum()
         big_buy_ratio = float(big_buy_volume / big_sell_volume)
         small_buy_ratio = float(small_buy_volume / small_sell_volume)
-        big_buy_avg_price = float(big_buy_amount / big_buy_volume / 100)
-        big_sell_avg_price = float(big_sell_amount / big_sell_volume / 100)
-        small_buy_avg_price = float(small_buy_amount / small_buy_volume / 100)
-        small_sell_avg_price = float(small_sell_amount / small_sell_volume / 100)
-        price_diff = float(big.amount.sum() / big.volume.sum() - small.amount.sum() / small.volume.sum())
+        big_avg_price = float(big.amount.sum() / big.volume.sum() / 100)
+        small_avg_price = float(small.amount.sum() / small.volume.sum() / 100)
         total_volume_percent = float(big.volume.sum() / (total_volume / 100)) * 100
-        content_raw = [thread, turnover, big_buy_ratio, small_buy_ratio, total_volume_percent, price_diff, big_buy_avg_price, big_sell_avg_price, small_buy_avg_price, small_sell_avg_price, big_buy_volume - big_sell_volume, small_buy_volume - small_sell_volume]
+        content_raw = [float(thread / 10000), turnover, big_buy_ratio, small_buy_ratio, total_volume_percent, big_avg_price, small_avg_price, big_buy_volume, - big_sell_volume, small_buy_volume, - small_sell_volume, big_buy_volume - big_sell_volume, small_buy_volume - small_sell_volume]
         content = [date] + [round(i, 2) for i in content_raw]
         return content
 
@@ -67,8 +59,6 @@ def tick_structure_filter(tick_struc, filter = None):
             criteria_list = [
             tick_struc[2] >= filter['turnover'],
             tick_struc[3] >= filter['big_buy_ratio'],
-            # tick_struc[4] <= filter['small_buy_ratio'],
-            # tick_struc[3] / tick_struc[4] > filter['big_small_difference'] or tick_struc[3] / tick_struc[4] < 1 / filter['big_small_difference']
             ]
             if all_true(criteria_list):
                 return tick_struc
@@ -78,7 +68,7 @@ def tick_structure_filter(tick_struc, filter = None):
             return tick_struc
     except: return None
 
-def tick_structure_to_list(code_list, days, bar, filter = None, start_date = ''):
+def tick_structure_to_list(code_list, days, bar = 10, filter = None, start_date = ''):
     try:
         for code in code_list:
             struc_list = []
@@ -112,13 +102,14 @@ def draw_sample(list, size):
     else:
         return list
 
-filter = {'turnover': 8, 'big_buy_ratio': 2, 'small_buy_ratio': 1.3, 'big_small_difference': 3}
+filter = {'turnover': 10, 'big_buy_ratio': 4, 'small_buy_ratio': 1.3,}
 
 # code_list = ms.complete_stock_list()
 # code_list = [i for i in code_list if i[0] != '3']
-code_list = ['603099']
-random.shuffle(code_list)
-print(code_list)
+# code_list = ['000043', '603099', '600824', '600558', '000301', '002107', '000514', \
+#             '500598', '600391', '000090', '000006', '000679', '600664', '600598', '600148']
+# code_list = ['603099']
+# random.shuffle(code_list)
 
-# code_list = ['600824', '603099', '000043', '002269', '000301', '600558', '002561']
-tick_structure_to_list(code_list, 150, 0.001)
+code_list = ['600824', '603099', '000043', '002269', '000301', '600558', '002561']
+tick_structure_to_list(code_list, 50)

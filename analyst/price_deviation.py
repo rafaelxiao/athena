@@ -2,6 +2,7 @@ import messenger as ms
 import assistant as at
 import threading, queue, os, math
 import matplotlib.pyplot as plt
+import pandas as pd
 from scipy.stats.stats import pearsonr
 
 # The data extracted from the tick data
@@ -82,8 +83,29 @@ class PriceDeviation:
         :return: the net cash flow amount
         '''
         try:
+
             cash_inflow = tick[tick.type == str(tick_type['buy'])].amount.sum()
-            cash_outflow = tick[tick.type == tick_type['sell']].amount.sum()
+            cash_outflow = tick[tick.type == str(tick_type['sell'])].amount.sum()
+        except:
+            return float(0)
+        return float(cash_inflow - cash_outflow)
+
+    def __weighted_net_cash_flow__(self, tick, outstanding):
+        '''
+        Calculate the weighted net cash flow of the trading day
+        :param tick: a Pandas DataFrame of tick data
+        :return: the weighted net cash flow amount
+        '''
+        try:
+            def get_weighted_flow(tick):
+                try:
+                    weighted_flow = (- math.log(tick['volume'] * 100 / outstanding, math.e) + 1) * tick['amount']
+                    return float(weighted_flow)
+                except:
+                    return float(0)
+            tick['weighted'] = tick.apply(get_weighted_flow, axis=1)
+            cash_inflow = tick[tick.type == str(tick_type['buy'])].weighted.sum()
+            cash_outflow = tick[tick.type == str(tick_type['sell'])].weighted.sum()
         except:
             return float(0)
         return float(cash_inflow - cash_outflow)
@@ -204,6 +226,7 @@ class PriceDeviation:
             volume = float(hist[6])
             turnover = float(volume / outstanding)
             theoretical_change = self.__net_cash_flow__(tick) * (-math.log(turnover, math.e) + 1) / outstanding
+            # theoretical_change = self.__weighted_net_cash_flow__(tick, outstanding) / outstanding
         else:
             theoretical_change = float(0)
         open = hist[2]
