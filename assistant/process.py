@@ -31,24 +31,30 @@ def pick_out(list, f):
             hold = list[i+1]
     return hold
 
-def sort_list_by_date(list):
+def sort_list_by_date(list_i):
     '''
     Sort the list by date
     :param list: the original list
     :return: the sorted list
     '''
     def greater(value1, value2):
+        if isinstance(value1, dict):
+            try:
+                if at.date_encoding(value1['date']) > at.date_encoding(value2['date']):
+                    return True
+            except: return False
+        else:
             if at.date_encoding(value1[0]) > at.date_encoding(value2[0]):
                 return True
-    i = len(list)
+    i = len(list_i)
     while i > 0:
         for j in range(i - 1):
-            if greater(list[j], list[j + 1]):
-                hold = list[j]
-                list[j] = list[j + 1]
-                list[j + 1] = hold
+            if greater(list_i[j], list_i[j + 1]):
+                hold = list_i[j]
+                list_i[j] = list_i[j + 1]
+                list_i[j + 1] = hold
         i -= 1
-    return list
+    return list_i
 
 # Running time
 def running_time(func, args):

@@ -2,6 +2,9 @@ import messenger as ms
 import assistant as at
 import threading, queue, os, math
 import matplotlib.pyplot as plt
+import matplotlib.finance as mpf
+import matplotlib.gridspec as gridspec
+from matplotlib.dates import date2num, DateFormatter, WeekdayLocator, DayLocator, MONDAY
 import pandas as pd
 from scipy.stats.stats import pearsonr
 
@@ -231,9 +234,15 @@ class PriceDeviation:
             theoretical_change = float(0)
         open = hist[2]
         close = hist[3]
+        high = hist[4]
+        low = hist[5]
+        volume = hist[6]
         reference = self.__reference_price__(hist)
         diff = self.__price_diff__(actual_change, theoretical_change)
-        return (date, code, open, close, reference, actual_change, theoretical_change, diff)
+        content = {'date': date, 'code': code, 'open': open, 'close': close, 'high': high, 'low': low, 'volume': volume, \
+                   'reference': reference, 'actual change': actual_change, 'theoretical change': theoretical_change, \
+                   'difference': diff}
+        return content
 
     def __diff_lists__(self, code, date='', duration=default_range, smooth = smooth, leading_smooth=leading_smooth, threads=threads_of_catch):
         '''
@@ -274,27 +283,33 @@ class PriceDeviation:
         # Re-construct for the final output list
         if len(origin_list) > 0:
             percent_list = []
-            reference_h = origin_list[0][4]
+            reference_h = origin_list[0]['reference']
             for io in origin_list:
                 # (date, code, open, close, reference, actual_change, theoretical_change, diff)
-                c_date = io[0]
-                c_code = io[1]
-                open = io[2]
-                close = io[3]
-                c_actual_change = self.__price_diff_percentage__(io[5], reference_h)
-                c_theoretical_change = self.__price_diff_percentage__(io[6], reference_h)
-                c_diff = self.__price_diff_percentage__(io[7], reference_h)
-                percent_list.append([c_date, c_code, open, close, c_actual_change, c_theoretical_change, c_diff])
-                reference_h = io[4]
-            smoothed_theoretical = [i[-2] for i in percent_list]
-            smoothed_actual = [i[-3] for i in percent_list]
-            smoothed_change = [i[-1] for i in percent_list]
+                c_date = io['date']
+                c_code = io['code']
+                open = io['open']
+                close = io['close']
+                high = io['high']
+                low = io['low']
+                volume = io['volume']
+                c_actual_change = self.__price_diff_percentage__(io['actual change'], reference_h)
+                c_theoretical_change = self.__price_diff_percentage__(io['theoretical change'], reference_h)
+                c_diff = self.__price_diff_percentage__(io['difference'], reference_h)
+                percent_list_line = {'date': c_date, 'code': c_code, 'open': open, 'close': close, 'high': high, \
+                                     'low': low, 'volume': volume, 'actual change': c_actual_change, \
+                                     'theoretical change': c_theoretical_change, 'difference': c_diff}
+                percent_list.append(percent_list_line)
+                reference_h = io['reference']
+            smoothed_theoretical = [i['theoretical change'] for i in percent_list]
+            smoothed_actual = [i['actual change'] for i in percent_list]
+            smoothed_change = [i['difference'] for i in percent_list]
             smoothed_theoretical = self.__smooth__(smoothed_theoretical, smooth)
             smoothed_change = self.__smooth__(smoothed_change, smooth)
             for ip in range(len(percent_list)):
-                percent_list[ip].append(smoothed_actual[ip])
-                percent_list[ip].append(smoothed_theoretical[ip])
-                percent_list[ip].append(smoothed_change[ip])
+                percent_list[ip]['smoothed actual'] = smoothed_actual[ip]
+                percent_list[ip]['smoothed theoretical'] = smoothed_theoretical[ip]
+                percent_list[ip]['smoothed difference'] = smoothed_change[ip]
             return percent_list[-duration:]
         else: return None
 
@@ -307,10 +322,10 @@ class PriceDeviation:
         '''
         date = self.__opening_dates__(code, 1, date)
         list = self.__measure_diff__(code, date)
-        reference_price = list[4]
-        theo_change = list[6]
-        actual_change = list[5]
-        diff = list[7]
+        reference_price = list['reference']
+        theo_change = list['theoretical change']
+        actual_change = list['actual change']
+        diff = list['difference']
         theo_change_percent = self.__price_diff_percentage__(theo_change, reference_price)
         actual_change_percent = self.__price_diff_percentage__(actual_change, reference_price)
         diff_percent = self.__price_diff_percentage__(diff, reference_price)
@@ -332,11 +347,11 @@ class PriceDeviation:
         output_list = []
         if list != None:
             for i in range(len(list)):
-                o_date = list[i][0]
-                o_code = list[i][1]
-                o_close = list[i][3]
-                o_theo_smoothed = list[i][8]
-                o_diff_smoothed = list[i][9]
+                o_date = list[i]['date']
+                o_code = list[i]['code']
+                o_close = list[i]['close']
+                o_theo_smoothed = list[i]['smoothed theoretical']
+                o_diff_smoothed = list[i]['smoothed difference']
                 output_list.append((o_date, o_code, o_close, o_theo_smoothed, o_diff_smoothed))
             return output_list
         else:
@@ -358,10 +373,10 @@ class PriceDeviation:
         if trace_back < 0:
             trace_back = 0
         if trace_back == 0:
-            x = [i[-1] for i in list]
+            x = [i['smoothed difference'] for i in list]
         else:
-            x = [i[-1] for i in list[:-trace_back]]
-        y = [float(i[3]) for i in list[trace_back:]]
+            x = [i['smoothed difference'] for i in list[:-trace_back]]
+        y = [float(i['close']) for i in list[trace_back:]]
         return pearsonr(x, y)
 
     def plot_difference(self, code, date='', duration=default_range, smooth = smooth, leading_smooth=leading_smooth, threads=threads_of_catch, type='show', height = graph_height):
@@ -379,25 +394,46 @@ class PriceDeviation:
         #(date, code, open, close, actual, theoretical, diff, smoothed)
         list = self.__diff_lists__(code, date, duration, smooth, leading_smooth, threads)
         if list != None:
-            x_date = [at.date_encoding(i[0]) for i in list]
-            y_price = [i[3] for i in list]
-            y_deviation = [i[9] for i in list]
-            y_theo = [i[8] for i in list]
-            # osci_enlarger = int((max(y_deviation) - min(y_deviation)) / (max(y_theo) - min(y_theo)) * 0.8)
+            x_date = [date2num(at.date_encoding(i['date'])) for i in list]
+            max_volume = max([i['volume'] for i in list])
+            y_price = [(date2num(at.date_encoding(i['date'])), i['open'], i['close'], i['high'], i['low']) for i in list]
+            y_deviation = [i['smoothed difference'] for i in list]
+            y_theo = [i['smoothed theoretical'] for i in list]
             y_theo = [i for i in y_theo]
+            y_volume = [(date2num(at.date_encoding(i['date'])), i['open'], i['high'], i['low'], i['close'], i['volume'] / max_volume) for i in list]
             support_line = []
             for i in range(len(figure_deviation_line)):
                 support_line.append([figure_deviation_line[i] for k in list])
-            fig, price = plt.subplots()
+            # fig, price = plt.subplots()
+            fig = plt.figure()
+            sub_plots = gridspec.GridSpec(2, 1, height_ratios=[5,1])
+            sub_plots.update(wspace=0.001, hspace=0.001)
+            price = plt.subplot(sub_plots[0])
+            price.xaxis_date()
+
+            mondays = WeekdayLocator(MONDAY)
+            alldays = DayLocator()
+            weekFormatter = DateFormatter('%b %d')
+            price.xaxis.set_major_locator(mondays)
+            price.xaxis.set_minor_locator(alldays)
+            price.xaxis.set_major_formatter(weekFormatter)
+            price.xaxis_date()
+
             deviation = price.twinx()
-            price.plot(x_date, y_price, 'b-')
-            deviation.plot(x_date, y_deviation, 'g--')
-            deviation.plot(x_date, y_theo, 'y--')
+            volume = plt.subplot(sub_plots[1], sharex = price)
+            mpf.candlestick_ochl(price, y_price, width=0.8, colorup='r', colordown='g', alpha=0.8)
+            deviation.plot(x_date, y_deviation, 'g')
+            deviation.plot(x_date, y_theo, 'y')
             for j in support_line:
                 deviation.plot(x_date, j, 'y:')
-            price.set_xlabel("%s %s %i" %(code, list[-1][0], smooth))
-            price.set_ylabel('price', color='b')
-            deviation.set_ylabel('deviation', color='g')
+            price.set_ylabel('price')
+            price.get_xaxis().set_visible(False)
+            deviation.set_ylabel('deviation')
+            mpf.volume_overlay3(volume, y_volume, width=10, colorup='r', colordown='g', alpha=0.8)
+            volume.get_yaxis().set_visible(False)
+            volume.set_xlabel("%s %s %i" %(code, list[-1]['date'], smooth))
+            volume.set_ylim(0, 1)
+
             if type == "show":
                 plt.show()
             if type == "save":
@@ -405,10 +441,8 @@ class PriceDeviation:
                     os.mkdir(os.path.join(os.getcwd(), 'graph'))
                 except:
                     pass
-                path = os.path.join(os.getcwd(), 'graph/%s-%s-%i-%i.png'%(code, list[-1][0], duration, smooth))
+                path = os.path.join(os.getcwd(), 'graph/%s-%s-%i-%i.png'%(code, list[-1]['date'], duration, smooth))
                 fig.set_size_inches(math.sqrt(int(duration)) * height / 3, height)
                 plt.savefig(path)
         else:
             print(the_warning)
-
-

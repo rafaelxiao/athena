@@ -4,7 +4,7 @@ import pandas as pd
 import messenger as ms
 import datetime, threading, queue, os
 
-basics_csv = 'basics.csv'
+local_data = {'basics': 'data/basics.csv'}
 board_type = {'sh': ['600', '601', '603'], 'sz': ['000'], 'cyb': ['300'], 'zxb': ['002']}
 outstanding_multiple = [100000000, 100000]
 largest_outstanding = 2000
@@ -25,7 +25,7 @@ def get_stock_basics(local = False):
     Get the stock basic information
     :return: None
     '''
-    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), basics_csv))
+    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), local_data['basics']))
     if local == True:
         basics = pd.read_csv(path, dtype=object)
         basics = basics.set_index('code')
@@ -76,7 +76,7 @@ def get_stock_code_by_type(type):
     :param type: str, the board type
     :return: a list of index
     '''
-    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), basics_csv))
+    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), local_data['basics']))
     basics = pd.read_csv(path, dtype='str')
     basics = basics.code[basics.code.str[:3].isin(board_type[type])]
     return basics.tolist()
@@ -86,7 +86,7 @@ def complete_stock_list():
     Generate a complete list of stock
     :return: A list of stock
     '''
-    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), basics_csv))
+    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), local_data['basics']))
     list = pd.read_csv(path, dtype='str')
     list = list.code.tolist()
     return list
@@ -204,3 +204,41 @@ def get_stock_report(code, year, quarter, type):
         return content_list
     except:
         pass
+
+def get_stock_report_frame(year, quarter, type):
+    '''
+    Return the data frame of inquired data
+    :param year: int, year
+    :param quarter: int, quarter
+    :param type: 'report', 'profit', 'operation', 'growth', 'debt', 'cash_flow'
+    :return: the data frame
+    '''
+    function_list = {
+        'report': ts.get_report_data,
+        'profit': ts.get_profit_data,
+        'operation': ts.get_operation_data,
+        'growth': ts.get_growth_data,
+        'debt':ts.get_debtpaying_data,
+        'cash_flow':ts.get_cashflow_data,
+    }
+    try:
+        content_list = function_list[type](year, quarter).set_index('code')
+        return content_list
+    except:
+        pass
+
+def get_industry_classified():
+    '''
+    Return the industry classified DataFrame
+    :return: the DataFrame
+    '''
+    content = ts.get_industry_classified()
+    return content
+
+def get_concept_classified():
+    '''
+    Return the concept classified DataFrame
+    :return: the DataFrame
+    '''
+    content = ts.get_concept_classified()
+    return content
