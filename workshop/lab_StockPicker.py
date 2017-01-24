@@ -1,5 +1,7 @@
 import messenger as ms
 import numpy as np
+import matplotlib.pyplot as plt
+import scipy.stats as stats
 
 class StockPicker:
 
@@ -27,34 +29,26 @@ class StockPicker:
         frame = self.__get_data_frame__(list, func, year, quarter)
         return frame
 
-    def find_outliers(self, classifier, klass, indicator, positive=1, multiple=2, func='basics', year=0, quarter=0):
+    def find_top(self, classifier, klass, indicator, top=0.1, largest=True, func='basics', year=0, quarter=0, positive=True, save_excel=False):
         frame = self.__get_data__(classifier, klass, func, year, quarter)
         frame = frame[frame[indicator].notnull()]
-        frame = frame[frame[indicator] > 0]
-        list = frame[indicator].tolist()
-        mean = np.mean(list)
-        print(mean)
-        std = np.std(list)
-        print(std)
-        if positive == 1:
-            bar = mean + multiple * std
-            content = frame[frame[indicator] > bar]
-        if positive == 0:
-            bar = mean - multiple * std
-            content = frame[frame[indicator] < bar]
-        content.to_excel('%s.xlsx'%klass)
+        if positive == True:
+            frame = frame[frame[indicator] > 0]
+        if largest == True:
+            bar = frame[indicator].quantile(1 - top)
+            content = frame[frame[indicator] >= bar].sort_values(by = indicator, ascending=False)
+        elif largest == False:
+            bar = frame[indicator].quantile(top)
+            content = frame[frame[indicator] <= bar].sort_values(by = indicator, ascending=True)
+        else:
+            return None
+        if save_excel == True:
+            if func == 'basics':
+                content.to_excel('%s-%s.xlsx'%(klass, indicator))
+            else:
+                content.to_excel('%s-%s-%s-%s.xlsx'%(klass, indicator, year, quarter))
+        else:
+            return content
 
-'''
-mark = '环保行业'
-picker = StockPicker()
-data = picker.get_data('industry', mark)
-data = data[data.pe.notnull()]
-data = data[data.pe > 0]
-bar = data.pe.quantile(0.25)
-data = data[data.pe < bar]
-data.to_excel('%s.xlsx'%mark)
-print(data)
-'''
-
-picker = StockPicker()
-picker.find_outliers('industry', '商业百货', 'pe', 1)
+h = StockPicker()
+h.find_top('industry', '水泥行业', 'pe', largest=False, save_excel=True, top=1)
