@@ -51,4 +51,4 @@ class StockPicker:
             return content
 
 h = StockPicker()
-h.find_top('industry', '水泥行业', 'pe', largest=False, save_excel=True, top=1)
+h.find_top('industry', '玻璃行业', 'pe', largest=False, save_excel=True, top=1)
