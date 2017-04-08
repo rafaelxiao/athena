@@ -46,22 +46,20 @@ while i < 150:
     i += 1
 '''
 
-list = ['600313', '603979', '000022', '000625', '000514', '002074', '600340', '000615', \
-       '600266', '002146', '000401', '000709', '002616', '600550']
+# list = ['600313', '603979', '000022', '000625', '000514', '002074', '600340', '000615', \
+#       '600266', '002146', '000401', '000709', '002616', '600550']
 
 # list = ['600050']
 # ag.list_for_price_deviation(list, duration=300)
 
-duration = [7, 20, 15]
+list = ['000625', '002146', '002074', '000022', '600313', '000514', '002616', '600266']
+smooth = [3, 7, 15, 30]
 h = al.PriceDeviation()
-date_list = ['2012-05-30', '2014-09-30', '2017-03-30']
-for k in duration:
-       for i in date_list:
-              for j in list:
-                     try:
-                            h.plot_difference(j, i, duration=300, smooth=k, type='save')
-                     except:
-                            pass
+for i in list:
+       try:
+              h.plot_difference_multi_smoothing(i, smooth, duration=1500, period_length=300, type='save')
+       except:
+              pass
 
 # h = al.PriceDeviation()
 # h.plot_difference('000401', date='2012-05-30', duration=300, smooth=20, type='save')
