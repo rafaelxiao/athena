@@ -11,6 +11,9 @@ class StockPicker:
             f = ms.get_industry_classified
         elif classifier == 'concept':
             f = ms.get_concept_classified
+        elif classifier == 'area':
+            f = ms.get_area_classified
+            column = 'area'
         else:
             return None
         frame = f()
@@ -51,4 +54,4 @@ class StockPicker:
             return content
 
 h = StockPicker()
-h.find_top('industry', '玻璃行业', 'pe', largest=False, save_excel=True, top=1)
+h.find_top('area', '河北', 'pe', largest=False, save_excel=True, top=1)

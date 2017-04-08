@@ -242,3 +242,11 @@ def get_concept_classified():
     '''
     content = ts.get_concept_classified()
     return content
+
+def get_area_classified():
+    '''
+    Return the area classified DataFrame
+    :return: the DataFrame
+    '''
+    content = ts.get_area_classified()
+    return content

@@ -313,6 +313,79 @@ class PriceDeviation:
             return percent_list[-duration:]
         else: return None
 
+    def __diff_lists_multi_smoothing__(self, code, smooth, date='', duration=default_range, leading_smooth=leading_smooth, threads=threads_of_catch):
+        '''
+        Generate a list of price differences along the date with multi-smoothing
+        :param code: str, stock index
+        :param date: str, date
+        :param duration: int, the demanded duration
+        :param smooth: list, the smooth method
+        :param leading_smooth: int, the leading smooth period
+        :param threads: int, the number of threads used
+        :return: a list in form of (date, code, open, close, actual_percent, theoretical_percent, diff_percent, smoothed_actual, smoothed_theoretical, smoothed_diff)
+        '''
+        def catch(code, date, outstanding, f, queue):
+            content = f(code, date, outstanding)
+            queue.put(content)
+        # Generate a days list that is the integral multiple of the threads
+        forwarding_days = (int((duration + leading_smooth) / threads + 1) * threads)
+        days_list = (self.__opening_dates__(code, forwarding_days, date))
+        # Multi-threading with looping
+        q = queue.Queue()
+        origin_list = []
+        pointer = 0
+        outstanding = ms.get_stock_outstanding(code)
+        while pointer <= len(days_list) - threads:
+            thread = []
+            for i in days_list[pointer : pointer + threads]:
+                t = threading.Thread(target=catch, args=(code, i, outstanding, self.__measure_diff__, q))
+                thread.append(t)
+            for j in thread:
+                j.start()
+            for k in thread:
+                k.join()
+            at.process_monitor((pointer + threads) / len(days_list) * 100)
+            pointer += threads
+        while not q.empty():
+            origin_list.append(q.get())
+        origin_list = at.sort_list_by_date(origin_list)
+        # Re-construct for the final output list
+        if len(origin_list) > 0:
+            percent_list = []
+            reference_h = origin_list[0]['reference']
+            for io in origin_list:
+                # (date, code, open, close, reference, actual_change, theoretical_change, diff)
+                c_date = io['date']
+                c_code = io['code']
+                open = io['open']
+                close = io['close']
+                high = io['high']
+                low = io['low']
+                volume = io['volume']
+                c_actual_change = self.__price_diff_percentage__(io['actual change'], reference_h)
+                c_theoretical_change = self.__price_diff_percentage__(io['theoretical change'], reference_h)
+                c_diff = self.__price_diff_percentage__(io['difference'], reference_h)
+                percent_list_line = {'date': c_date, 'code': c_code, 'open': open, 'close': close, 'high': high, \
+                                     'low': low, 'volume': volume, 'actual change': c_actual_change, \
+                                     'theoretical change': c_theoretical_change, 'difference': c_diff}
+                percent_list.append(percent_list_line)
+                reference_h = io['reference']
+            smoothed_theoretical_holder = [i['theoretical change'] for i in percent_list]
+            smoothed_actual = [i['actual change'] for i in percent_list]
+            smoothed_change_holder = [i['difference'] for i in percent_list]
+            smoothed_theoretical = []
+            smoothed_change = []
+            for ism in smooth:
+                smoothed_theoretical.append(self.__smooth__(smoothed_theoretical_holder, ism))
+                smoothed_change.append(self.__smooth__(smoothed_change_holder, ism))
+            for ip in range(len(percent_list)):
+                percent_list[ip]['smoothed actual'] = smoothed_actual[ip]
+                for ismx in range(len(smoothed_theoretical)):
+                    percent_list[ip]['smoothed theoretical %s' % smooth[ismx]] = smoothed_theoretical[ismx][ip]
+                    percent_list[ip]['smoothed difference %s' % smooth[ismx]] = smoothed_change[ismx][ip]
+            return percent_list[-duration:]
+        else: return None
+
     def show_difference(self, code, date=''):
         '''
         Show the difference in percent between actual and theoretical price
@@ -379,7 +452,7 @@ class PriceDeviation:
         y = [float(i['close']) for i in list[trace_back:]]
         return pearsonr(x, y)
 
-    def plot_difference(self, code, date='', duration=default_range, smooth = smooth, leading_smooth=leading_smooth, threads=threads_of_catch, type='show', height = graph_height):
+    def plot_difference(self, code, date='', duration=default_range, smooth = smooth, leading_smooth=leading_smooth, threads=threads_of_catch, period_length = 0, type='show', height = graph_height):
         '''
         Plot the difference with price
         :param code: str, stock index
@@ -391,58 +464,153 @@ class PriceDeviation:
         :param type: show or save the figure
         :return: None
         '''
-        #(date, code, open, close, actual, theoretical, diff, smoothed)
-        list = self.__diff_lists__(code, date, duration, smooth, leading_smooth, threads)
-        if list != None:
-            x_date = [date2num(at.date_encoding(i['date'])) for i in list]
-            max_volume = max([i['volume'] for i in list])
-            y_price = [(date2num(at.date_encoding(i['date'])), i['open'], i['close'], i['high'], i['low']) for i in list]
-            y_deviation = [i['smoothed difference'] for i in list]
-            y_theo = [i['smoothed theoretical'] for i in list]
-            y_theo = [i for i in y_theo]
-            y_volume = [(date2num(at.date_encoding(i['date'])), i['open'], i['high'], i['low'], i['close'], i['volume'] / max_volume) for i in list]
-            support_line = []
-            for i in range(len(figure_deviation_line)):
-                support_line.append([figure_deviation_line[i] for k in list])
-            # fig, price = plt.subplots()
-            fig = plt.figure()
-            sub_plots = gridspec.GridSpec(2, 1, height_ratios=[5,1])
-            sub_plots.update(wspace=0.001, hspace=0.001)
-            price = plt.subplot(sub_plots[0])
-            price.xaxis_date()
+        if period_length == 0:
+            period_length = duration
+        periods_list = at.split_period(date, duration, period_length)
+        for i in periods_list:
+            date = i['start_date']
+            duration = i['days']
+            #(date, code, open, close, actual, theoretical, diff, smoothed)
+            list = self.__diff_lists__(code, date, duration, smooth, leading_smooth, threads)
+            if list != None:
+                x_date = [date2num(at.date_encoding(i['date'])) for i in list]
+                max_volume = max([i['volume'] for i in list])
+                y_price = [(date2num(at.date_encoding(i['date'])), i['open'], i['close'], i['high'], i['low']) for i in list]
+                y_deviation = [i['smoothed difference'] for i in list]
+                y_theo = [i['smoothed theoretical'] for i in list]
+                y_theo = [i for i in y_theo]
+                y_volume = [(date2num(at.date_encoding(i['date'])), i['open'], i['high'], i['low'], i['close'], i['volume'] / max_volume) for i in list]
+                support_line = []
+                for i in range(len(figure_deviation_line)):
+                    support_line.append([figure_deviation_line[i] for k in list])
+                # fig, price = plt.subplots()
+                fig = plt.figure()
+                sub_plots = gridspec.GridSpec(2, 1, height_ratios=[5,1])
+                sub_plots.update(wspace=0.001, hspace=0.001)
+                price = plt.subplot(sub_plots[0])
+                price.xaxis_date()
 
-            mondays = WeekdayLocator(MONDAY)
-            alldays = DayLocator()
-            weekFormatter = DateFormatter('%b %d')
-            price.xaxis.set_major_locator(mondays)
-            price.xaxis.set_minor_locator(alldays)
-            price.xaxis.set_major_formatter(weekFormatter)
-            price.xaxis_date()
+                mondays = WeekdayLocator(MONDAY)
+                alldays = DayLocator()
+                weekFormatter = DateFormatter('%b %d')
+                price.xaxis.set_major_locator(mondays)
+                price.xaxis.set_minor_locator(alldays)
+                price.xaxis.set_major_formatter(weekFormatter)
+                price.xaxis_date()
 
-            deviation = price.twinx()
-            volume = plt.subplot(sub_plots[1], sharex = price)
-            mpf.candlestick_ochl(price, y_price, width=0.8, colorup='r', colordown='g', alpha=0.8)
-            deviation.plot(x_date, y_deviation, 'g')
-            deviation.plot(x_date, y_theo, 'y')
-            for j in support_line:
-                deviation.plot(x_date, j, 'y:')
-            price.set_ylabel('price')
-            price.get_xaxis().set_visible(False)
-            deviation.set_ylabel('deviation')
-            mpf.volume_overlay3(volume, y_volume, width=10, colorup='r', colordown='g', alpha=0.8)
-            volume.get_yaxis().set_visible(False)
-            volume.set_xlabel("%s %s %i" %(code, list[-1]['date'], smooth))
-            volume.set_ylim(0, 1)
+                deviation = price.twinx()
+                volume = plt.subplot(sub_plots[1], sharex = price)
+                mpf.candlestick_ochl(price, y_price, width=0.8, colorup='r', colordown='g', alpha=0.8)
+                deviation.plot(x_date, y_deviation, 'g')
+                deviation.plot(x_date, y_theo, 'y')
+                for j in support_line:
+                    deviation.plot(x_date, j, 'y:')
+                price.set_ylabel('price')
+                price.get_xaxis().set_visible(False)
+                deviation.set_ylabel('deviation')
+                mpf.volume_overlay3(volume, y_volume, width=10, colorup='r', colordown='g', alpha=0.8)
+                volume.get_yaxis().set_visible(False)
+                volume.set_xlabel("%s %s %i" %(code, list[-1]['date'], smooth))
+                volume.set_ylim(0, 1)
 
-            if type == "show":
-                plt.show()
-            if type == "save":
-                try:
-                    os.mkdir(os.path.join(os.getcwd(), 'graph'))
-                except:
-                    pass
-                path = os.path.join(os.getcwd(), 'graph/%s-%s-%i-%i.png'%(code, list[-1]['date'], duration, smooth))
-                fig.set_size_inches(math.sqrt(int(duration)) * height / 3, height)
-                plt.savefig(path)
-        else:
-            print(the_warning)
+                if type == "show":
+                    plt.show()
+                if type == "save":
+                    try:
+                        os.mkdir(os.path.join(os.getcwd(), 'graph'))
+                    except:
+                        pass
+                    path = os.path.join(os.getcwd(), 'graph/%s-%s-%i-%i.png'%(code, list[-1]['date'], duration, smooth))
+                    fig.set_size_inches(math.sqrt(int(duration)) * height / 3, height)
+                    plt.savefig(path)
+            else:
+                print(the_warning)
+
+    def plot_difference_multi_smoothing(self, code, smooth, date='', duration=default_range, leading_smooth=leading_smooth, threads=threads_of_catch, period_length = 0, type='show', height = graph_height):
+        '''
+        Plot the difference with multiple smoothing method
+        :param code: str, stock index
+        :param date: str, date
+        :param duration: int, the analysis duration
+        :param smooth: list, the smooth method
+        :param leading_smooth: int, the leading smooth period
+        :param threads: int, the number of threads used
+        :param type: show or save the figure
+        :return: None
+        '''
+        if period_length == 0:
+            period_length = duration
+        periods_list = at.split_period(date, duration, period_length)
+        for i in periods_list:
+            date = i['start_date']
+            duration = i['days']
+            #(date, code, open, close, actual, theoretical, diff, smoothed)
+            list = self.__diff_lists_multi_smoothing__(code, smooth, date, duration, leading_smooth, threads)
+            if list != None:
+                x_date = [date2num(at.date_encoding(i['date'])) for i in list]
+                max_volume = max([i['volume'] for i in list])
+                y_price = [(date2num(at.date_encoding(i['date'])), i['open'], i['close'], i['high'], i['low']) for i in list]
+                y_deviation_list = {}
+                for idv in smooth:
+                    y_deviation_list['smoothed difference %s'%idv] = [i['smoothed difference %s'%idv] for i in list]
+                # y_deviation = [i['smoothed difference'] for i in list]
+                # y_theo = [i['smoothed theoretical'] for i in list]
+                # y_theo = [i for i in y_theo]
+                y_volume = [(date2num(at.date_encoding(i['date'])), i['open'], i['high'], i['low'], i['close'], i['volume'] / max_volume) for i in list]
+                support_line = []
+                for i in range(len(figure_deviation_line)):
+                    support_line.append([figure_deviation_line[i] for k in list])
+                # fig, price = plt.subplots()
+                fig = plt.figure()
+                sub_plots = gridspec.GridSpec(2, 1, height_ratios=[5,1])
+                sub_plots.update(wspace=0.001, hspace=0.001)
+                price = plt.subplot(sub_plots[0])
+                price.xaxis_date()
+
+                mondays = WeekdayLocator(MONDAY)
+                alldays = DayLocator()
+                weekFormatter = DateFormatter('%b %d')
+                price.xaxis.set_major_locator(mondays)
+                price.xaxis.set_minor_locator(alldays)
+                price.xaxis.set_major_formatter(weekFormatter)
+                price.xaxis_date()
+
+                deviation = price.twinx()
+                volume = plt.subplot(sub_plots[1], sharex = price)
+                mpf.candlestick_ochl(price, y_price, width=0.8, colorup='r', colordown='g', alpha=0.8)
+
+                def pick_clor(color_list, idx):
+                    length = len(color_list)
+                    try:
+                        if idx == 0:
+                            return color_list[0]
+                        else:
+                            return color_list[idx % length]
+                    except:
+                        return color_list[0]
+
+                color_list = ['g', 'y', 'b', 'r']
+                for idvc in range(len(smooth)):
+                    deviation.plot(x_date, y_deviation_list['smoothed difference %s'%smooth[idvc]], pick_clor(color_list, idvc))
+                for j in support_line:
+                    deviation.plot(x_date, j, 'y:')
+                price.set_ylabel('price')
+                price.get_xaxis().set_visible(False)
+                deviation.set_ylabel('deviation')
+                mpf.volume_overlay3(volume, y_volume, width=10, colorup='r', colordown='g', alpha=0.8)
+                volume.get_yaxis().set_visible(False)
+                smooth_tag = '-'.join([str(i) for i in smooth])
+                volume.set_xlabel("%s %s %s" %(code, list[-1]['date'], smooth_tag))
+                volume.set_ylim(0, 1)
+                if type == "show":
+                    plt.show()
+                if type == "save":
+                    try:
+                        os.mkdir(os.path.join(os.getcwd(), 'graph'))
+                    except:
+                        pass
+                    path = os.path.join(os.getcwd(), 'graph/%s-%s-%i-%s.png'%(code, list[-1]['date'], duration, smooth_tag))
+                    fig.set_size_inches(math.sqrt(int(duration)) * height / 3, height)
+                    plt.savefig(path)
+            else:
+                print(the_warning)

@@ -116,3 +116,29 @@ def time_list():
             time_list.append(i)
         i = TS.add_time(i, 1)
     return time_list
+
+def split_period(start_date, total_length, period_lengh):
+    '''
+    Split the time in to several period, which each unit with 'start_date' and 'days'
+    :param start_date: the start date of the whole period
+    :param total_length: the total length
+    :param period_length: the length of each period
+    :return: a list of dictionary with 'start_date' and 'days'
+    '''
+    if start_date == '':
+        start_date = date_decoding(datetime.date.today())
+    periods_number = int(total_length / period_lengh)
+    periods_last = total_length % period_lengh
+    periods_list = []
+    for i in range(periods_number):
+        periods_unit = {}
+        periods_unit['start_date'] = date_decoding(date_encoding(start_date) - datetime.timedelta(i * period_lengh))
+        periods_unit['days'] = period_lengh
+        periods_list.append(periods_unit)
+    if total_length % period_lengh != 0:
+        periods_unit = {}
+        periods_unit['start_date'] = date_decoding(date_encoding(start_date) - datetime.timedelta(periods_number * period_lengh))
+        periods_unit['days'] = periods_last
+        periods_list.append(periods_unit)
+    return periods_list[::-1]
+

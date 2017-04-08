@@ -1,9 +1,7 @@
 import sys
 import os
 cwd = os.path.dirname(os.getcwd())
-print (cwd)
 sys.path.append(cwd)
-print(sys.path)
 import analyst as al
 import messenger as ms
 import agent as ag
@@ -48,10 +46,25 @@ while i < 150:
     i += 1
 '''
 
-list = ['600313', '603979', '000022', '000625', '000877', '000514', '002352']
-# list = ['002074']
-ag.list_for_price_deviation(list, duration=100)
+list = ['600313', '603979', '000022', '000625', '000514', '002074', '600340', '000615', \
+       '600266', '002146', '000401', '000709', '002616', '600550']
 
+# list = ['600050']
+# ag.list_for_price_deviation(list, duration=300)
+
+duration = [7, 20, 15]
+h = al.PriceDeviation()
+date_list = ['2012-05-30', '2014-09-30', '2017-03-30']
+for k in duration:
+       for i in date_list:
+              for j in list:
+                     try:
+                            h.plot_difference(j, i, duration=300, smooth=k, type='save')
+                     except:
+                            pass
+
+# h = al.PriceDeviation()
+# h.plot_difference('000401', date='2012-05-30', duration=300, smooth=20, type='save')
 # h = al.PriceDeviation()
 # s = h.__measure_diff__('600313', '2017-03-15')
 # s = ms.get_stock_hist_data('600313', '2017-03-15')
