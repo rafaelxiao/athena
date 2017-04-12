@@ -3,179 +3,205 @@ import trader as tr
 import messenger as ms
 import assistant as at
 import time, datetime
+import copy
 
-class Portfolio():
-    '''
-    Basic functions of a porfolio
-    '''
+class Unit():
 
-    def __init__(self):
-        '''
-        Initiate, create a portfolio list and a unit_ratio
-        :return:
-        '''
-        self.unit_ratio = float(1)
-        self.portfolio = []
-
-    def __find_index__(self, name):
-        '''
-        Find the index by name in the portfolio list
-        :param name: str
-        :return: int, the index
-        '''
-        for i in range(len(self.portfolio)):
-            if self.portfolio[i]['name'] == name:
-                return i
-        return -1
-
-    def __is_valid_input__(self, name, amount=0.0, ratio=0.0):
-        '''
-        Test if an input is validate
-        :param name: str
-        :param amount: float or int
-        :param ratio: float or int
-        :return: boolean
-        '''
-        amount = self.__covert_to_float__(amount)
-        ratio = self.__covert_to_float__(ratio)
-        if isinstance(name, str) and isinstance(amount, float) and isinstance(ratio, float):
-            if amount >= 0 and ratio >= 0:
-                return True
+    def __is_correct_type__(self, name, amount, ratio):
+        name_type = isinstance(name, str)
+        amount_type = isinstance(amount, float)
+        ratio_type = isinstance(ratio, float)
+        if name_type and amount_type and ratio_type:
+            return True
         else:
             return False
 
-    def __covert_to_float__(self, number):
-        '''
-        Covert to float if success
-        :param number: any type
-        :return: float or nothing
-        '''
-        try:
-            number = float(number)
-        except:
-            pass
-        return number
+    def __is_valid_inputs__(self, name, amount, ratio):
+        valid = False
+        if self.__is_correct_type__(name, amount, ratio):
+            valid = True
+        return valid
 
-    def add(self, name, amount, ratio):
-        '''
-        Add a entry to the portfolio list
-        :param name: str
-        :param amount: int or float
-        :param ratio: int or float
-        :return: None
-        '''
-        amount = self.__covert_to_float__(amount)
-        ratio = self.__covert_to_float__(ratio)
-        if len(self.portfolio) == 0:
-            ratio = 1.0
-        if self.__is_valid_input__(name, amount, ratio):
-            line = {'name': name, 'amount': amount, 'ratio': ratio}
-            idx = self.__find_index__(name)
-            if idx == -1:
-                self.portfolio.append(line)
+    def is_valid_unit(self, unit):
+        try:
+            name = unit['name']
+            amount = unit['amount']
+            ratio = unit['ratio']
+            if self.__is_valid_inputs__(name, amount, ratio):
+                return True
             else:
-                self.portfolio[idx] = line
+                return False
+        except:
+            return False
 
-    def remove(self, name):
-        '''
-        Remove a entry from the portfolio list, will not remove the base line
-        :param name: str
-        :return: None
-        '''
-        if self.__is_valid_input__(name):
-            idx = self.__find_index__(name)
-            if idx != -1 and idx != 0:
-                self.portfolio.remove(self.portfolio[idx])
-
-    def change_base(self, name):
-        '''
-        Change the base line of the portfolio
-        :param name: str
-        :return: None
-        '''
-        if self.__is_valid_input__(name):
-            idx = self.__find_index__(name)
-            if idx != -1:
-                converter = self.portfolio[idx]['ratio']
-                for i in range(len(self.portfolio)):
-                    self.portfolio[i]['ratio'] = self.portfolio[i]['ratio'] / converter
-                new_base = self.portfolio[idx]
-                self.portfolio.remove(self.portfolio[idx])
-                self.portfolio = [new_base] + self.portfolio
-
-    def __value_a_line__(self, name):
-        '''
-        Return the value of a line
-        :param name: str
-        :return: float
-        '''
-        if self.__is_valid_input__(name):
-            idx = self.__find_index__(name)
-            if idx != -1:
-                value = self.unit_ratio * self.portfolio[idx]['ratio'] * self.portfolio[idx]['amount']
-                return value
-
-    def value_portfolio(self):
-        '''
-        Value the entire portfolio
-        :return: float
-        '''
-        total_value = 0.0
-        for i in self.portfolio:
-            total_value += self.__value_a_line__(i['name'])
-        return total_value
-
-    def update_name(self, new_name, old_name):
-        '''
-        Update the name of one line
-        :param new_name: str
-        :param old_name: str
-        :return: None
-        '''
-        if self.__is_valid_input__(new_name) and self.__is_valid_input__(old_name):
-            idx = self.__find_index__(old_name)
-            if idx != -1:
-                self.portfolio[idx]['name'] = new_name
-
-    def update_amount(self, name, amount, aggregate=False):
-        '''
-        Update the amount of one line
-        :param name: str
-        :param amount: int or float
-        :param aggregate: boolean
-        :return: None
-        '''
-        if self.__is_valid_input__(name, amount=abs(amount)):
-            idx = self.__find_index__(name)
-            if idx != -1:
-                ratio = self.portfolio[idx]['ratio']
-                if aggregate != False:
-                    amount = self.portfolio[idx]['amount'] + amount
-                self.add(name, amount, ratio)
-
-    def update_ratio(self, name, ratio):
-        '''
-        Update the ratio of one line
-        :param name: str
-        :param ratio: int or float
-        :return: None
-        '''
-        if self.__is_valid_input__(name, ratio=ratio):
-            idx = self.__find_index__(name)
-            if idx != -1:
-                amount = self.portfolio[idx]['amount']
-                self.add(name, amount, ratio)
-
-    def update_unit_ratio(self, number):
-        '''
-        Update the unit ratio
-        :param number: int or float
-        :return: None
-        '''
+    def __convert_to_float__(self, number):
         try:
             number = float(number)
-            self.unit_ratio = number
+            return number
         except:
-            pass
+            return number
 
+    def make_a_unit(self, name, amount, ratio):
+        amount = self.__convert_to_float__(amount)
+        ratio = self.__convert_to_float__(ratio)
+        if self.__is_valid_inputs__(name, amount, ratio):
+            content = {'name': name, 'amount': amount, 'ratio': ratio}
+        else:
+            content = {}
+        return content
 
+    def show_amount(self, unit):
+        if self.is_valid_unit(unit):
+            return unit['amount']
+        else:
+            return 0
+
+    def show_ratio(self, unit):
+        if self.is_valid_unit(unit):
+            return unit['ratio']
+        else:
+            return 0
+
+    def update(self, content, unit, type):
+        if self.is_valid_unit(unit):
+            origin = dict(unit)
+            unit[type] = content
+            if not self.is_valid_unit(unit):
+                unit = origin
+        return unit
+
+class Portfolio():
+
+    def __init__(self, text = None, base = 'cash'):
+        self.unit_spliter = '|'
+        self.agent_unit = Unit()
+        self.portfolio = []
+        base_unit = self.agent_unit.make_a_unit(base, 0, 1)
+        if self.agent_unit.is_valid_unit(base_unit):
+            self.portfolio.append(base_unit)
+        if text != None:
+            loaded = self.__load__(text)
+            if loaded != None:
+                self.portfolio = loaded
+
+    def save(self):
+        content = self.unit_spliter.join([str(i) for i in self.portfolio])
+        return content
+
+    def __load__(self, text):
+        try:
+            content = text.split(self.unit_spliter)
+            for i in range(len(content)):
+                content[i] = eval(content[i])
+        except:
+            content = None
+        return content
+
+    def __find_index__(self, name):
+        idx = -1
+        for i in range(len(self.portfolio)):
+            if self.portfolio[i]['name'] == name:
+                idx = i
+                break
+        return idx
+
+    def __check__(self):
+        blank = []
+        for i in range(1, len(self.portfolio)):
+            if self.portfolio[i]['amount'] == 0.0:
+                blank.append(self.portfolio[i])
+        for j in blank:
+            self.portfolio.remove(j)
+
+    def __combine__(self, unit, ratio_update=False):
+        if self.agent_unit.is_valid_unit(unit):
+            idx = self.__find_index__(unit['name'])
+            if idx == -1:
+                self.portfolio.append(unit)
+            else:
+                unit['amount'] = unit['amount'] + self.agent_unit.show_amount(self.portfolio[idx])
+                self.portfolio[idx] = self.agent_unit.update(unit['amount'], self.portfolio[idx], 'amount')
+                if ratio_update == True:
+                    self.portfolio[idx] = self.agent_unit.update(unit['ratio'], self.portfolio[idx], 'ratio')
+
+    def __update_ratio__(self, name, ratio):
+        entry = self.agent_unit.make_a_unit(name, 0, ratio)
+        if self.agent_unit.is_valid_unit(entry):
+            idx = self.__find_index__(name)
+            if idx != -1:
+                self.__combine__(entry, True)
+
+    def __get_value__(self, name, type):
+        idx = self.__find_index__(name)
+        value = None
+        if idx != -1:
+            if type == 'amount':
+                value = self.agent_unit.show_amount(self.portfolio[idx])
+            elif type == 'ratio':
+                value = self.agent_unit.show_ratio(self.portfolio[idx])
+            else: pass
+        return value
+
+    def __value__(self, unit):
+        value = 0.0
+        if self.agent_unit.is_valid_unit(unit):
+            amount = self.agent_unit.show_amount(unit)
+            ratio = self.agent_unit.show_ratio(unit)
+            value = amount * ratio
+        return value
+
+    def __value_a_unit__(self, name):
+        value = 0.0
+        idx = self.__find_index__(name)
+        if idx != -1:
+            value = self.__value__(self.portfolio[idx])
+        return value
+
+    def __sufficient_fund__(self, unit):
+        result = False
+        fund = self.__get_value__(self.portfolio[0]['name'], 'amount')
+        cost = self.__value__(unit)
+        if fund >= cost:
+            result = True
+        return result
+
+    def buy(self, name, amount, ratio):
+        entry = self.agent_unit.make_a_unit(name, amount, ratio)
+        if self.agent_unit.is_valid_unit(entry):
+            if self.__sufficient_fund__(entry):
+                cost = self.__value__(entry)
+                base_renew = self.agent_unit.make_a_unit(self.portfolio[0]['name'], -cost, 1)
+                self.__combine__(base_renew)
+                self.__combine__(entry)
+                self.__check__()
+
+    def deposit(self, amount):
+        entry = self.agent_unit.make_a_unit(self.portfolio[0]['name'], amount, self.portfolio[0]['ratio'])
+        if self.agent_unit.is_valid_unit(entry):
+            self.__combine__(entry)
+
+    def withdraw(self, amount):
+        entry = self.agent_unit.make_a_unit(self.portfolio[0]['name'], amount, self.portfolio[0]['ratio'])
+        if self.agent_unit.is_valid_unit(entry):
+            if self.__sufficient_fund__(entry):
+                cost = self.__value__(entry)
+                self.agent_unit.update(-cost, entry, 'amount')
+                self.__combine__(entry)
+
+    def sell(self, name, amount, ratio):
+        entry = self.agent_unit.make_a_unit(name, -amount, ratio)
+        if self.agent_unit.is_valid_unit(entry):
+            amount_available = self.__get_value__(entry['name'], 'amount')
+            if amount_available != None:
+                if amount_available >= -entry['amount']:
+                    gain = -self.__value__(entry)
+                    base_renew = self.agent_unit.make_a_unit(self.portfolio[0]['name'], gain, 1)
+                    self.__combine__(base_renew)
+                    self.__combine__(entry)
+                    self.__check__()
+
+    def value_porfolio(self):
+        total = 0.0
+        for i in self.portfolio:
+            total += self.__value__(i)
+        return total

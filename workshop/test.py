@@ -3,6 +3,7 @@ import os
 cwd = os.path.dirname(os.getcwd())
 sys.path.append(cwd)
 import analyst as al
+import assistant as at
 import messenger as ms
 import agent as ag
 import random
@@ -52,12 +53,13 @@ while i < 150:
 # list = ['600050']
 # ag.list_for_price_deviation(list, duration=300)
 
-list = ['000625', '002146', '002074', '000022', '600313', '000514', '002616', '600266']
-smooth = [3, 7, 15, 30]
+list = random.sample([i for i in ms.complete_stock_list() if i[0] != '3'], 100)
+print(list)
+smooth = [10, 30]
 h = al.PriceDeviation()
 for i in list:
        try:
-              h.plot_difference_multi_smoothing(i, smooth, duration=1500, period_length=300, type='save')
+              h.plot_difference_multi_smoothing(i, smooth, date='2012-10-30', duration=900, period_length=300, type='save')
        except:
               pass
 
