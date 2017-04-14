@@ -250,3 +250,26 @@ def get_area_classified():
     '''
     content = ts.get_area_classified()
     return content
+
+def get_index(date, idx, type, duration=0):
+    '''
+    Return the index of specific type in a specific day
+    :param date: str, date
+    :param idx: str, stock index
+    :param type: str, type
+    :return: the index
+    '''
+    dict = {'sh': '000001', \
+            'sz': '399001'}
+    end = at.date_decoding(at.date_encoding(date) + datetime.timedelta(duration))
+    matrix = ts.get_k_data(dict[idx], index=True, start=date, end=end)
+    content = []
+    for i in range(len(matrix)):
+        line = {}
+        line['date'] = matrix.iloc[i]['date']
+        line['index'] = matrix.iloc[i][type]
+        content.append(line)
+    if len(content) == 1:
+        index = content[0]['index']
+        content = index
+    return content

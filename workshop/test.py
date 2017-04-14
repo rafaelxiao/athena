@@ -49,9 +49,10 @@ while i < 150:
 
 # list = ['600313', '603979', '000022', '000625', '000514', '002074', '600340', '000615', \
 #       '600266', '002146', '000401', '000709', '002616', '600550']
+'''
+list = ['000022']
+ag.list_for_price_deviation(list, duration=200)
 
-# list = ['600050']
-# ag.list_for_price_deviation(list, duration=300)
 
 list = random.sample([i for i in ms.complete_stock_list() if i[0] != '3'], 100)
 print(list)
@@ -62,6 +63,23 @@ for i in list:
               h.plot_difference_multi_smoothing(i, smooth, date='2012-10-30', duration=900, period_length=300, type='save')
        except:
               pass
+'''
+
+'''
+s = StockAccount(time = '2012-10-11')
+s.deposit(10000, '2012-10-12')
+s.buy('000625', 600, 1, '2012-10-16')
+s.buy('000625', 600, 3, '2013-05-20')
+s.print_last()
+s.plot_performance_with_index(method='save')
+'''
+
+text = '''
+2012-10-12, deposit 10000
+2012-10-16, buy 600 000625 at 1
+2013-05-20, buy 600 000625 at 3
+'''
+al.portfolio_performance(text)
 
 # h = al.PriceDeviation()
 # h.plot_difference('000401', date='2012-05-30', duration=300, smooth=20, type='save')
