@@ -1,1 +1,1 @@
-from trader.stock_account import StockAccount
+from trader.stock_account import StockAccount, portfolio_performance
