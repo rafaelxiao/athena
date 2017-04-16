@@ -32,7 +32,7 @@ def periodic_auction_scanner(code, days, start_date='', progress_bar=1):
     except:
         print(error_message)
 
-def list_for_price_deviation(list, date='', duration=90):
+def list_for_price_deviation(list, date='', duration=90, smooth=3):
     '''
     For a collection of intrested stocks, plot the price deviation graph and save figures
     :param list: a list of stock code
@@ -44,7 +44,7 @@ def list_for_price_deviation(list, date='', duration=90):
     valid_code = ms.get_stock_basics().index.values.tolist()
     for i in list:
         if i in valid_code:
-            h.plot_difference(i, date, duration, type='save', smooth=3)
+            h.plot_difference(i, date, duration, type='save', smooth=smooth)
 
 
 

@@ -58,6 +58,35 @@ def opening_days(code=opening_days_tester, days=10, start_date='', multi_threads
     list = [i[0] for i in list]
     return list
 
+def is_opening_day(code, date):
+    result = False
+    list = opening_days(code, 1, date, 1)
+    if len(list) >= 1:
+        if list[0] == date:
+            result = True
+    return result
+
+def next_opening_day(code, date, shifter=1):
+
+    def shift_one_day(date):
+        result = at.date_decoding(at.date_encoding(date) + datetime.timedelta(shifter))
+        return result
+
+    count = 0
+    result = None
+    while True:
+        if is_opening_day(code, date):
+            result = date
+            break
+        elif count>= 300:
+            break
+        else:
+            date = shift_one_day(date)
+            count += 1
+
+    return result
+
+
 class TimeStamp:
     '''
     A class to represent the time

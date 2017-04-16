@@ -495,9 +495,11 @@ class StockAccount():
         if loaded != None:
             self.captain = Account(loaded['captain'])
             self.first_mate = Account(loaded['first_mate'])
+            self.total_investment = loaded['total_investment']
         else:
             self.captain = Account(time=time, base='cash')
             self.first_mate = Account(time=time, base='cash')
+            self.total_investment = 0.0
         self.__auto_combine__()
         self.reference_price = 'close'
         self.fee = {'tax': 0.001, 'transfer': 1, 'service': 0.0005}
@@ -516,7 +518,7 @@ class StockAccount():
         fee = 0.0
         transfer = shares / 1000 * self.fee['transfer']
         if transfer <= 1:
-            transfer == 1
+            transfer = 1
         tax = price * shares * self.fee['tax']
         service = price * shares * self.fee['service']
         if type == 'buy':
@@ -529,6 +531,7 @@ class StockAccount():
         content = {}
         content['captain'] = self.captain.save()
         content['first_mate'] = self.first_mate.save()
+        content['total_investment'] = self.total_investment
         return str(content)
 
     def __load__(self, text):
@@ -589,6 +592,23 @@ class StockAccount():
             dict.append(line)
         return dict
 
+    def __output_dict__(self, dict=None):
+        if dict == None:
+            dict = self.account
+        text = ''
+        for i in dict:
+            text += ('\n')
+            text += ('Date: %s\n'%i['date'])
+            text += ('Cash: %.2f\n'%i['cash'])
+            text += ('Portfolio:\n')
+            for k in i['portfolio']:
+                text += ('\tCode: %s, Amount: %.2f, Bought Price: %.2f, Market Price: %.2f\n'%(k['code'], k['shares'], k['price'], k['market']))
+            text += ('Cost: %.2f, Value: %.2f\n'%(i['cost'], i['value']))
+            text += ('Log:\n')
+            for j in i['log']:
+                text += ('\t%s\n'%j)
+        return text
+
     def __auto_combine__(self):
         dict = self.__combine__(self.captain, self.first_mate)
         self.account = dict
@@ -628,18 +648,20 @@ class StockAccount():
             pass
         return result
 
-    def __buy_amount_calculator__(self, ratio, price):
+    def __buy_amount_calculator__(self, ratio, price, in_graph=False):
         result = 0.0
         ratio = self.__convert_to_float__(ratio)
         price = self.__convert_to_float__(price)
         if ratio != None and price != None:
             cash_available = self.cash()
             result = int(((cash_available / price) * ratio) / 100) * 100
+            if in_graph == True:
+                result += 0.01
         return result
 
-    def buy(self, code, quantity, price, date):
+    def buy(self, code, quantity, price, date, in_graph=False):
         if quantity <= 1:
-            quantity = self.__buy_amount_calculator__(quantity, price)
+            quantity = self.__buy_amount_calculator__(quantity, price, in_graph)
         if code in self.stock_list:
             date = self.__opening_day__(code, date)
             original = copy.deepcopy(self.captain)
@@ -656,14 +678,20 @@ class StockAccount():
         return self.account[-1]['cash']
 
     def deposit(self, quantity, date):
+        dict = list(self.account)
         self.captain.deposit(date, quantity)
         self.first_mate.deposit(date, quantity)
         self.__auto_combine__()
+        if dict != self.account:
+            self.total_investment += quantity
 
     def withdraw(self, quaitity, date):
+        dict = list(self.account)
         self.captain.withdraw(date, quaitity)
         self.first_mate.withdraw(date, quaitity)
         self.__auto_combine__()
+        if dict != self.account:
+            self.total_investment -= quaitity
 
     def __sell_amount_calculator__(self, ratio, price, code):
         result = 0.0
@@ -728,7 +756,7 @@ class StockAccount():
         content = self.__combine__(captain, first_mate)
         return content
 
-    def plot_performance_with_index(self, idx='sh', type='close', method='show'):
+    def plot_performance_with_index(self, idx='sh', type='close', method='show', id=''):
         filled = self.fill()[1:]
         list = self.performance.performance_with_index(filled, idx, type)
         length = len(list)
@@ -756,9 +784,12 @@ class StockAccount():
                 os.mkdir(os.path.join(os.getcwd(), 'graph'))
             except:
                 pass
-            path = os.path.join(os.getcwd(), 'graph/%sto%s'%(list[0]['date'], list[-1]['date']))
+            path = os.path.join(os.getcwd(), 'graph/%s%sto%s'%('%s '%id, list[0]['date'], list[-1]['date']))
             fig.set_size_inches(math.sqrt(int(length)) * 10 / 3, 10)
             plt.savefig(path)
+            with open('%s.txt'%path, 'w') as f:
+                text = self.__output_dict__()
+                f.write(text)
 
 class StockAccountPerformance():
 
@@ -798,7 +829,7 @@ class StockAccountPerformance():
 
     def performance_with_index(self, dict, idx='sh', type='close'):
         result = []
-        if len(dict[-1]['portfolio']) >= 1:
+        if len(dict[-1]['portfolio']) >= 0:
             portfolio_performance_list = self.__return_index__(dict)
             market_performance_list = self.__market_return_index__(dict, idx, type)
             for i in portfolio_performance_list:
