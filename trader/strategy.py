@@ -12,9 +12,9 @@ import matplotlib.gridspec as gridspec
 from matplotlib.dates import date2num, DateFormatter, WeekdayLocator, DayLocator, MONDAY
 
 def diff_line_strategy(code_list, date_list, duration, smooth):
-    for code in code_list:
-        for date in date_list:
-            try:
+    try:
+        for code in code_list:
+            for date in date_list:
                 p = al.PriceDeviation()
                 s = p.__diff_lists__(code, date=date, duration=duration, smooth=smooth)
                 state = 'unhold'
@@ -31,9 +31,6 @@ def diff_line_strategy(code_list, date_list, duration, smooth):
                             state = 'unhold'
                     i_hold = i['smoothed difference']
 
-                for i in list:
-                    print(i)
-
                 account = tr.StockAccount(time=at.next_opening_day(code, list[0]['date']))
                 account = tr.StockAccount(account.save())
                 account.deposit(100000, at.next_opening_day(code, list[0]['date']))
@@ -48,5 +45,5 @@ def diff_line_strategy(code_list, date_list, duration, smooth):
                         account.deposit(0.01, date)
 
                 account.plot_performance_with_index(method='save', id=code)
-            except:
-                pass
+    except:
+        pass

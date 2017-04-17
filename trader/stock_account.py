@@ -497,6 +497,7 @@ class StockAccount():
             self.first_mate = Account(loaded['first_mate'])
             self.total_investment = loaded['total_investment']
         else:
+            time = self.__opening_day__('399300', time)
             self.captain = Account(time=time, base='cash')
             self.first_mate = Account(time=time, base='cash')
             self.total_investment = 0.0
@@ -512,6 +513,7 @@ class StockAccount():
         function_list['get_hist_data'] = ms.get_stock_hist_data
         function_list['date_encoding'] = at.date_encoding
         function_list['progress_bar'] = at.process_monitor
+        function_list['next_opening_day'] = at.next_opening_day
         return function_list
 
     def __fee_calculator__(self, price, shares, type):
@@ -678,6 +680,7 @@ class StockAccount():
         return self.account[-1]['cash']
 
     def deposit(self, quantity, date):
+        date = self.__opening_day__('399300', date)
         dict = list(self.account)
         self.captain.deposit(date, quantity)
         self.first_mate.deposit(date, quantity)
@@ -686,6 +689,7 @@ class StockAccount():
             self.total_investment += quantity
 
     def withdraw(self, quaitity, date):
+        date = self.__opening_day__('399300', date)
         dict = list(self.account)
         self.captain.withdraw(date, quaitity)
         self.first_mate.withdraw(date, quaitity)
@@ -764,6 +768,7 @@ class StockAccount():
         x_date = [date2num(self.functions['date_encoding'](i['date'])) for i in list]
         y_portfolio_return = [i['portfolio_value_change'] for i in list]
         y_market_return = [i['market_value_change'] for i in list]
+        y_price_return = [i['price_value_change'] for i in list]
 
         fig, portfolio_return = plt.subplots()
         mondays = WeekdayLocator(MONDAY)
@@ -775,6 +780,7 @@ class StockAccount():
         portfolio_return.xaxis_date()
         portfolio_return.plot(x_date, y_portfolio_return, 'b-')
         portfolio_return.plot(x_date, y_market_return, 'y-')
+        portfolio_return.plot(x_date, y_price_return, 'g-')
         portfolio_return.set_ylabel('Return')
         portfolio_return.set_xlabel('%s to %s, Portfolio vs Market'%(list[0]['date'], list[-1]['date']))
         if method == 'show':
@@ -798,8 +804,8 @@ class StockAccountPerformance():
 
     def __return_index__(self, dict):
         result = []
-        if len(dict) >= 1:
-            for i in dict[1:]:
+        if len(dict) >= 0:
+            for i in dict:
                 line = {}
                 line['date'] = i['date']
                 line['value'] = i['value']
@@ -807,6 +813,32 @@ class StockAccountPerformance():
                 line['change'] = (i['value'] / i['cost'] - 1) * 100
                 result.append(line)
         return result
+
+    def __price_return_index__(self, dict):
+
+        def avg_price(portfolio):
+            average = 0.0
+            num = len(portfolio)
+            if num > 0:
+                for i in portfolio:
+                    average += i['market'] / num
+            return average
+        base = 0.0
+        for j in dict:
+            base = avg_price(j['portfolio'])
+            if base != 0.0:
+                break
+        result = []
+        if len(dict) >= 0:
+            for i in dict:
+                line = {}
+                line['date'] = i['date']
+                line['price'] = avg_price(i['portfolio'])
+                line['index'] = line['price'] / base
+                line['change'] = (line['index'] - 1) * 100
+                result.append(line)
+        return result
+
 
     def __market_return_index__(self, dict, idx='sh', type='close'):
         result = []
@@ -832,17 +864,23 @@ class StockAccountPerformance():
         if len(dict[-1]['portfolio']) >= 0:
             portfolio_performance_list = self.__return_index__(dict)
             market_performance_list = self.__market_return_index__(dict, idx, type)
+            price_performance_list = self.__price_return_index__(dict)
             for i in portfolio_performance_list:
                 for j in market_performance_list:
                     if i['date'] == j['date']:
-                        line = {}
-                        line['date'] = i['date']
-                        line['portfolio_value'] = i['value']
-                        line['portfolio_return_index'] = i['index']
-                        line['portfolio_value_change'] = i['change']
-                        line['market_return_index'] = j['index']
-                        line['market_value_change'] = j['change']
-                        result.append(line)
+                        for k in price_performance_list:
+                            if j['date'] == k['date']:
+                                line = {}
+                                line['date'] = i['date']
+                                line['portfolio_value'] = i['value']
+                                line['portfolio_return_index'] = i['index']
+                                line['portfolio_value_change'] = i['change']
+                                line['market_return_index'] = j['index']
+                                line['market_value_change'] = j['change']
+                                line['price_return_index'] = k['index']
+                                line['price_value_change'] = k['change']
+                                result.append(line)
+                                break
                         break
         return result
 
