@@ -66,7 +66,7 @@ def is_opening_day(code, date):
             result = True
     return result
 
-def next_opening_day(code, date, shifter=1):
+def next_opening_day(code, date, shifter=1, default_shift=False):
 
     def shift_one_day(date):
         result = at.date_decoding(at.date_encoding(date) + datetime.timedelta(shifter))
@@ -74,6 +74,9 @@ def next_opening_day(code, date, shifter=1):
 
     count = 0
     result = None
+
+    if default_shift == True:
+        date = shift_one_day(date)
     while True:
         if is_opening_day(code, date):
             result = date
