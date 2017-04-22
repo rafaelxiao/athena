@@ -11,7 +11,7 @@ import matplotlib.finance as mpf
 import matplotlib.gridspec as gridspec
 from matplotlib.dates import date2num, DateFormatter, WeekdayLocator, DayLocator, MONDAY
 
-def diff_line_strategy(code_list, date_list, duration, smooth, amount=100000):
+def diff_line_strategy(code_list, date_list, duration, smooth, bar=0.0, amount=100000):
 
     for code in code_list:
         for date in date_list:
@@ -22,16 +22,15 @@ def diff_line_strategy(code_list, date_list, duration, smooth, amount=100000):
                 list = []
                 i_hold = 0
                 for i in s:
-                    if i['smoothed difference'] >= 0:
-                        if i_hold < 0 and state == 'unhold':
+                    if i['smoothed difference'] >= bar:
+                        if i_hold < bar and state == 'unhold':
                             list.append({'date' : i['date'], 'signal': 'buy'})
                             state = 'hold'
-                    if i['smoothed difference'] < 0:
-                        if i_hold > 0 and state == 'hold':
+                    if i['smoothed difference'] < bar:
+                        if i_hold >= bar and state == 'hold':
                             list.append({'date' : i['date'], 'signal': 'sell'})
                             state = 'unhold'
                     i_hold = i['smoothed difference']
-
 
                 account = tr.StockAccount(time=at.next_opening_day(code, list[0]['date']))
                 account = tr.StockAccount(account.save())
@@ -46,7 +45,8 @@ def diff_line_strategy(code_list, date_list, duration, smooth, amount=100000):
                     if list[i] == list[-1]:
                         account.deposit(0.01, date)
 
-                account.plot_performance_with_index(method='save', id=code)
+                id = str(code) + '-' + str(int(bar*100))
+                account.plot_performance_with_index(method='save', id=id)
             except:
                 pass
 

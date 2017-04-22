@@ -420,15 +420,33 @@ class PriceDeviation:
         output_list = []
         if list != None:
             for i in range(len(list)):
-                o_date = list[i]['date']
-                o_code = list[i]['code']
-                o_close = list[i]['close']
-                o_theo_smoothed = list[i]['smoothed theoretical']
-                o_diff_smoothed = list[i]['smoothed difference']
-                output_list.append((o_date, o_code, o_close, o_theo_smoothed, o_diff_smoothed))
+                line = {}
+                line['date'] = list[i]['date']
+                line['code'] = list[i]['code']
+                line['cloese'] = list[i]['close']
+                line['smoothed theoretical'] = list[i]['smoothed theoretical']
+                line['smoothed difference'] = list[i]['smoothed difference']
+                output_list.append(line)
             return output_list
         else:
             print(the_warning)
+
+    def price_diff_list_save(self, code, date, duration, smooth):
+        list = self.show_difference_list(code=code, date=date, duration=duration, smooth=smooth)
+        try:
+            os.mkdir(os.path.join(os.getcwd(), 'graph'))
+        except:
+            pass
+        with open(os.path.join(os.getcwd(), 'graph/%s-%s-%s-%s.txt'%(code, date, duration, smooth)), 'w+') as f:
+            for i in list:
+                f.writelines('%s\n'%str(i))
+
+    def price_diff_list_load(self, code, date, duration, smooth):
+        list = []
+        with open(os.path.join(os.getcwd(), 'graph/%s-%s-%s-%s.txt'%(code, date, duration, smooth)), 'r') as r:
+            for j in r.readlines():
+                list.append(eval(j))
+        return list
 
     def show_correlation(self, code, trace_back = 1, date='', duration=default_range, smooth = smooth, leading_smooth=leading_smooth, threads=threads_of_catch):
         '''
