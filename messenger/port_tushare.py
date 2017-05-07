@@ -142,6 +142,10 @@ def get_series_hist_data(code, days, start_date = '', multi_threads = 20):
     :param multi_threads: int, the number of threads, default 20
     :return: a list for the data of a series of dates
     '''
+    if days < 10:
+        days_n = 10
+    else:
+        days_n = days
     if start_date != '':
         start_date = at.date_encoding(start_date)
     else:
@@ -155,7 +159,7 @@ def get_series_hist_data(code, days, start_date = '', multi_threads = 20):
     q = queue.Queue()
     q_n = queue.Queue()
     list = []
-    while q.qsize() < days and q_n.qsize() < days * 2:
+    while q.qsize() < days and q_n.qsize() < days_n * 2:
         threads = []
         for days_back in range(0, multi_threads):
             day_mark = start_date - datetime.timedelta(days_back)

@@ -6,7 +6,7 @@ sys.path.append(cwd)
 print(sys.path)
 import analyst as al
 import messenger as ms
-import agent as ag
+import trader as tr
 import random
 
 '''
@@ -50,7 +50,7 @@ while i < 150:
 
 list = ['600313', '603979', '000022', '000625', '000877', '000514', '002352']
 # list = ['002074']
-ag.list_for_price_deviation(list, duration=100)
+tr.list_for_price_deviation(list, duration=100)
 
 # h = al.PriceDeviation()
 # s = h.__measure_diff__('600313', '2017-03-15')

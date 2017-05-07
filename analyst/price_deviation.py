@@ -1,5 +1,6 @@
 import messenger as ms
 import assistant as at
+import trader as tr
 import threading, queue, os, math
 import matplotlib.pyplot as plt
 import matplotlib.finance as mpf
@@ -423,9 +424,11 @@ class PriceDeviation:
                 line = {}
                 line['date'] = list[i]['date']
                 line['code'] = list[i]['code']
-                line['cloese'] = list[i]['close']
+                line['close'] = list[i]['close']
+                line['open'] = list[i]['open']
                 line['smoothed theoretical'] = list[i]['smoothed theoretical']
                 line['smoothed difference'] = list[i]['smoothed difference']
+                line['smoothed actual'] = list[i]['smoothed actual']
                 output_list.append(line)
             return output_list
         else:
@@ -632,3 +635,114 @@ class PriceDeviation:
                     plt.savefig(path)
             else:
                 print(the_warning)
+
+class PriceDevAna:
+
+    def __init__(self):
+        self.S = tr.StratCarrier
+
+    def __tops_and_bottoms__(self, list, top_thread=0.0, bottom_thread=0.0):
+        def up(num1, num2):
+            up = False
+            if num1 >= num2:
+                up = True
+            return up
+        unit_prev = {}
+        output_list = []
+        for i in range(1, len(list)):
+            if up(list[i], list[i - 1]):
+                unit = {'trend': 'up', 'value': list[i]}
+            else:
+                unit = {'trend': 'down', 'value': list[i]}
+            if unit_prev == {}:
+                unit_prev = unit
+            if unit['trend'] != unit_prev['trend']:
+                if unit_prev['trend'] == 'up' and float(unit_prev['value']) >= top_thread:
+                    output_list.append(unit_prev)
+                if unit_prev['trend'] == 'down' and float(unit_prev['value']) <= bottom_thread:
+                    output_list.append(unit_prev)
+            unit_prev = unit
+        top_list = [i['value'] for i in output_list if i['trend'] == 'up']
+        bottom_list = [i['value'] for i in output_list if i['trend'] == 'down']
+        return {'top': top_list, 'bottom': bottom_list}
+
+    def __extract_from_list__(self, list, type):
+        output_list = [i[type] for i in list]
+        return output_list
+
+    def __categorize_with_groups__(self, list, cate_list):
+        def generate_cate_dict(cate_list, raw_list):
+            output_dict = {}
+            for i in range(len(cate_list)):
+                if len(cate_list) == 1:
+                    output_dict['below %s' % str(cate_list[i])] = raw_list[0]
+                    output_dict['above %s' % str(cate_list[i])] = raw_list[-1]
+                if i == 0:
+                    output_dict['below %s'%str(cate_list[i])] = raw_list[0]
+                elif i == len(cate_list) - 1:
+                    output_dict['%s to %s' %(str(cate_list[i - 1]), str(cate_list[i]))] = raw_list[-2]
+                    output_dict['above %s'%str(cate_list[i])] = raw_list[-1]
+                else:
+                    output_dict['%s to %s'%(str(cate_list[i-1]), str(cate_list[i]))] = raw_list[i]
+            return output_dict
+
+        cate_list.sort()
+
+        raw_list = [[] for i in range(len(cate_list) + 1)]
+        for i in list:
+            for j in range(len(cate_list)):
+                if i > cate_list[-1]:
+                    raw_list[-1].append(i)
+                    break
+                elif i < cate_list[j]:
+                    raw_list[j].append(i)
+                    break
+                else:
+                    continue
+
+        output_dict = generate_cate_dict(cate_list, raw_list)
+        return output_dict
+
+    def get_tops_and_bottoms(self, list, type, top_thread=0.0, bottom_thread=0.0, top_outlier=0.0, bottom_outlier=0.0):
+        list = [i[type] for i in list]
+        output_dict = self.__tops_and_bottoms__(list, top_thread, bottom_thread)
+        if top_outlier != 0.0:
+            output_dict['top'] = [i for i in output_dict['top'] if i <= top_outlier]
+        if bottom_outlier != 0.0:
+            output_dict['bottom'] = [i for i in output_dict['bottom'] if i >= bottom_outlier]
+        return output_dict
+
+    def group_count_detail(self, code, date, cate_list, type, duration=300, smooth=3, length=15, day_interval=0, discover_mode=False):
+        duration = length + duration
+        if day_interval==0:
+            day_interval = length
+        s = tr.StratCarrier(code, date, duration, smooth, discover_mode)
+        list = s.origin_list
+        output = []
+        for i in range(length, len(list)):
+            p_list = list[i-length: i]
+            u_date = list[i]['date']
+            if type == 'difference':
+                value_list = self.__extract_from_list__(p_list, 'smoothed difference')
+            elif type == 'theoretical':
+                value_list = self.__extract_from_list__(p_list, 'smoothed theoretical')
+            elif type == 'combine':
+                value_list = self.__extract_from_list__(p_list, 'smoothed difference') + self.__extract_from_list__(p_list, 'smoothed theoretical')
+            else:
+                value_list = []
+            u_detail = self.__categorize_with_groups__(value_list, cate_list)
+            u_count = {}
+            for i in u_detail:
+                u_count[i] = len(u_detail[i])
+            line = {'date': u_date, 'detail': u_count}
+            output.append(line)
+        output = output[::day_interval]
+        return output
+
+    def group_count_detail_print(self, code, date, cate_list, type, duration=300, smooth=3, length=15, day_interval=0, discover_mode=False):
+        result = self.group_count_detail(code, date, cate_list, type, duration, smooth, length, day_interval, discover_mode)
+        for i in result:
+            print(i['date'])
+            for j in i['detail']:
+                print('\t%s: %i'%(j, i['detail'][j]))
+            print()

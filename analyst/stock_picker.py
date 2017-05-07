@@ -1,7 +1,4 @@
 import messenger as ms
-import numpy as np
-import matplotlib.pyplot as plt
-import scipy.stats as stats
 
 class StockPicker:
 
@@ -52,6 +49,3 @@ class StockPicker:
                 content.to_excel('%s-%s-%s-%s.xlsx'%(klass, indicator, year, quarter))
         else:
             return content
-
-h = StockPicker()
-h.find_top('area', '河北', 'pe', largest=False, save_excel=True, top=1)

@@ -760,42 +760,50 @@ class StockAccount():
         content = self.__combine__(captain, first_mate)
         return content
 
-    def plot_performance_with_index(self, idx='sh', type='close', method='show', id=''):
+    def plot_performance_with_index(self, idx='sh', type='close', method='show', id='', text_only=False):
         filled = self.fill()[1:]
         list = self.performance.performance_with_index(filled, idx, type)
         length = len(list)
-
-        x_date = [date2num(self.functions['date_encoding'](i['date'])) for i in list]
-        y_portfolio_return = [i['portfolio_value_change'] for i in list]
-        y_market_return = [i['market_value_change'] for i in list]
-        y_price_return = [i['price_value_change'] for i in list]
-
-        fig, portfolio_return = plt.subplots()
-        mondays = WeekdayLocator(MONDAY)
-        alldays = DayLocator()
-        weekFormatter = DateFormatter('%b %d')
-        portfolio_return.xaxis.set_major_locator(mondays)
-        portfolio_return.xaxis.set_minor_locator(alldays)
-        portfolio_return.xaxis.set_major_formatter(weekFormatter)
-        portfolio_return.xaxis_date()
-        portfolio_return.plot(x_date, y_portfolio_return, 'b-')
-        portfolio_return.plot(x_date, y_market_return, 'y-')
-        portfolio_return.plot(x_date, y_price_return, 'g-')
-        portfolio_return.set_ylabel('Return')
-        portfolio_return.set_xlabel('%s to %s, Portfolio vs Market'%(list[0]['date'], list[-1]['date']))
-        if method == 'show':
-            plt.show()
-        if method == 'save':
+        path = os.path.join(os.getcwd(), 'graph/%s%sto%s' % ('%s ' % id, list[0]['date'], list[-1]['date']))
+        if text_only == True:
             try:
                 os.mkdir(os.path.join(os.getcwd(), 'graph'))
             except:
                 pass
-            path = os.path.join(os.getcwd(), 'graph/%s%sto%s'%('%s '%id, list[0]['date'], list[-1]['date']))
-            fig.set_size_inches(math.sqrt(int(length)) * 10 / 3, 10)
-            plt.savefig(path)
-            with open('%s.txt'%path, 'w') as f:
+            with open('%s.txt' % path, 'w') as f:
                 text = self.__output_dict__()
                 f.write(text)
+        else:
+            x_date = [date2num(self.functions['date_encoding'](i['date'])) for i in list]
+            y_portfolio_return = [i['portfolio_value_change'] for i in list]
+            y_market_return = [i['market_value_change'] for i in list]
+            y_price_return = [i['price_value_change'] for i in list]
+
+            fig, portfolio_return = plt.subplots()
+            mondays = WeekdayLocator(MONDAY)
+            alldays = DayLocator()
+            weekFormatter = DateFormatter('%b %d')
+            portfolio_return.xaxis.set_major_locator(mondays)
+            portfolio_return.xaxis.set_minor_locator(alldays)
+            portfolio_return.xaxis.set_major_formatter(weekFormatter)
+            portfolio_return.xaxis_date()
+            portfolio_return.plot(x_date, y_portfolio_return, 'b-')
+            portfolio_return.plot(x_date, y_market_return, 'y-')
+            portfolio_return.plot(x_date, y_price_return, 'g-')
+            portfolio_return.set_ylabel('Return')
+            portfolio_return.set_xlabel('%s to %s, Portfolio vs Market, %s'%(list[0]['date'], list[-1]['date'], id))
+            if method == 'show':
+                plt.show()
+            if method == 'save':
+                try:
+                    os.mkdir(os.path.join(os.getcwd(), 'graph'))
+                except:
+                    pass
+                fig.set_size_inches(math.sqrt(int(length)) * 10 / 3, 10)
+                plt.savefig(path)
+                with open('%s.txt'%path, 'w') as f:
+                    text = self.__output_dict__()
+                    f.write(text)
 
 class StockAccountPerformance():
 
