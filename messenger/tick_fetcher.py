@@ -1,5 +1,6 @@
 import json
 import os, sys
+import numpy as np
 import tushare as ts
 import pandas as pd
 import datetime, time
@@ -120,7 +121,7 @@ class TickData:
                         content.sort_index(inplace=True)
         return content
 
-    def __generate_date_list__(self, start, end):
+    def __generate_date_list_local__(self, start, end):
         date_list = []
         start = self.__date_encoding__(start)
         end = self.__date_encoding__(end)
@@ -129,6 +130,13 @@ class TickData:
             if pointer.weekday() <= 4:
                 date_list.append(self.__date_decoding__(pointer))
             pointer += datetime.timedelta(1)
+        return date_list
+
+    def __generate_date_list__(self, code, start, end):
+        frame = ts.get_k_data(code, start, end)
+        date_list = []
+        for i, j in frame.iterrows():
+            date_list.append(j['date'])
         return date_list
 
     def show_dates(self, code, short=False):
@@ -152,17 +160,28 @@ class TickData:
         return stocks
 
     def deposit(self, code, start, end, time_sleep=1, progress_bar=True):
-        date_list = self.__generate_date_list__(start, end)
+        date_list = self.__generate_date_list__(code, start, end)
         date_existed = self.show_dates(code)
         length = len(date_list)
         count = 0
+        error_count = 0
+        sleep_count = 0
         for date in date_list:
             count += 1
             if date not in date_existed:
                 try:
                     time.sleep(time_sleep)
                     self.__get_one_tick__(code, date)
+                    error_count = 0
+                    sleep_count = 0
                 except:
+                    error_count += 1
+                    if error_count >= 10:
+                        time.sleep(300 * np.sqrt(time_sleep))
+                        error_count = 0
+                        sleep_count += 1
+                    if sleep_count >= 10:
+                        raise
                     pass
             if progress_bar == True:
                 self.__process_monitor__(count / length * 100)
