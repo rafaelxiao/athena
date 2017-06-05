@@ -124,7 +124,7 @@ def diff_and_actual_count_strategy_multi_proccessing(code_list, date_list, bar=0
 # diff_and_actual_count_strategy(code, date, 0, type='combine', spots=[4/10, 5/10, 6/10, 7/10], length=15, duration=300, loose_cut=0.1, gain_cut=0.2, discover_mode=True)
 # tr.list_for_price_deviation(['600313'], duration=300)
 h = ms.TickData()
-h.deposit('000022', '2017-05-02', '2017-06-04')
-tr.list_for_price_deviation(['600313'], date='2017-06-02', duration=200)
+h.deposit('600558', '2017-05-02', '2017-06-04')
+# tr.list_for_price_deviation(['600313'], date='2017-06-02', duration=200)
 print(h.get_tick_data('603919', '2017-04-26'))
 
