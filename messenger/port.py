@@ -4,28 +4,35 @@ import pandas as pd
 import messenger as ms
 import datetime, threading, queue, os
 
-local_data = {'basics': 'data/basics.csv'}
+local_data = {'basics': 'basics.csv'}
 board_type = {'sh': ['600', '601', '603'], 'sz': ['000'], 'cyb': ['300'], 'zxb': ['002']}
 outstanding_multiple = [100000000, 100000]
 largest_outstanding = 2000
 volume_multiple = 100
+data_warehouse = '\\\\Violet\\flow\\Financial Data'
 
-def get_tick_data(code, date):
+def get_tick_data(code, date, address=None):
     '''
     Get the tick data of specific trading day
     :param code: string, stock index
     :param date: string, date, '2016-10-11'
     :return: a pandas frame of tick data
     '''
-    tick_data = ts.get_tick_data(code, date)
+    if address == None:
+        address = data_warehouse
+    h = ms.TickData(address)
+    tick_data = h.get_tick_data(code, date)
     return tick_data
 
-def get_stock_basics(local = False):
+def get_stock_basics(local = False, address=None):
     '''
     Get the stock basic information
     :return: None
     '''
-    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), local_data['basics']))
+    # path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), local_data['basics']))
+    if address == None:
+        address = data_warehouse
+    path = os.path.join(address, local_data['basics'])
     if local == True:
         basics = pd.read_csv(path, dtype=object)
         basics = basics.set_index('code')

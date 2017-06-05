@@ -712,6 +712,36 @@ class PriceDevAna:
             output_dict['bottom'] = [i for i in output_dict['bottom'] if i >= bottom_outlier]
         return output_dict
 
+    def group_count_detail(self, list, cate_list, type, length, day_interval=0):
+        output = []
+        for i in range(length, len(list)):
+            p_list = list[i-length: i]
+            u_date = list[i]['date']
+            if type == 'difference':
+                value_list = self.__extract_from_list__(p_list, 'smoothed difference')
+            elif type == 'theoretical':
+                value_list = self.__extract_from_list__(p_list, 'smoothed theoretical')
+            elif type == 'combine':
+                value_list = self.__extract_from_list__(p_list, 'smoothed difference') + self.__extract_from_list__(p_list, 'smoothed theoretical')
+            else:
+                value_list = []
+            u_detail = self.__categorize_with_groups__(value_list, cate_list)
+            u_count = {}
+            for i in u_detail:
+                u_count[i] = len(u_detail[i])
+            line = {'date': u_date, 'detail': u_count}
+            output.append(line)
+        output = output[::day_interval]
+        return output
+
+    def group_count_detail_print(self, list, cate_list, type, length=15, day_interval=0):
+        result = self.group_count_detail(list, cate_list, type, length, day_interval)
+        for i in result:
+            print(i['date'])
+            for j in i['detail']:
+                print('\t%s: %i' % (j, i['detail'][j]))
+            print()
+'''
     def group_count_detail(self, code, date, cate_list, type, duration=300, smooth=3, length=15, day_interval=0, discover_mode=False):
         duration = length + duration
         if day_interval==0:
@@ -746,3 +776,6 @@ class PriceDevAna:
             for j in i['detail']:
                 print('\t%s: %i'%(j, i['detail'][j]))
             print()
+'''
+
+

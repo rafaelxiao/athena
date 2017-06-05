@@ -90,6 +90,43 @@ class StratCarrier:
                         line = {'date': date, 'action': action}
                         self.action_list.append(line)
 
+    def form_action_list_with_spots (self, f_buy, f_sell, f_enter, f_reach, loose_cut=1, gain_cut=0):
+        hold = 'none'
+        ref_price = 0.0
+        for i in range(len(self.criteria_list)):
+            date = self.criteria_list[i]['date']
+            action = 'none'
+            if hold == 'none':
+                if f_enter(self.criteria_list[i]):
+                    hold = 'start'
+            elif hold == 'start':
+                if f_buy(self.criteria_list[i]):
+                    if i != len(self.criteria_list) - 1:
+                        ref_price = self.criteria_list[i+1]['open']
+                        action = 'buy'
+                        hold = 'hold'
+            else:
+                if self.criteria_list[i]['close'] < ref_price * (1 - loose_cut):
+                    action = 'sell'
+                    hold = 'none'
+                else:
+                    if hold == 'hold':
+                        if self.criteria_list[i]['close'] > ref_price * (1 + gain_cut) and gain_cut != 0:
+                            hold = 'reach'
+                        elif f_reach(self.criteria_list[i]):
+                                hold = 'reach'
+                        else:
+                            if f_enter(self.criteria_list[i]):
+                                hold = 'none'
+                                action = 'sell'
+                    if hold == 'reach':
+                        if f_sell(self.criteria_list[i]):
+                            hold = 'none'
+                            action = 'sell'
+            line = {'date': date, 'action': action}
+            self.action_list.append(line)
+
+
     def implement(self, name_string, amount=100000, text_only=False):
         code = self.code
         date = self.date
