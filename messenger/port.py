@@ -10,14 +10,15 @@ board_type = {'sh': ['600', '601', '603'], 'sz': ['000'], 'cyb': ['300'], 'zxb':
 outstanding_multiple = [100000000, 100000]
 largest_outstanding = 2000
 volume_multiple = 100
-data_warehouse = '\\\\Violet\\flow\\Financial Data'
+# data_warehouse = 'D:\\Financial Data'
+data_warehouse = '\\\\Violet\\galaxy\\Financial Data'
 if platform.system() == 'Darwin':
     try:
-        os.mkdir('/Volumes/FLOW')
-        os.system('mount_smbfs //guest:@violet/FLOW /Volumes/FLOW')
+        os.mkdir('/Volumes/Galaxy')
+        os.system('mount_smbfs //guest:@violet/galaxy /Volumes/Galaxy')
     except:
         pass
-    data_warehouse = '/Volumes/FLOW/Financial Data'
+    data_warehouse = '/Volumes/Galaxy/Financial Data'
 
 
 def get_tick_data(code, date, address=None):

@@ -70,12 +70,31 @@ class TickData:
             length -= 1
         return date_list
 
+    def __store_index__(self, code, date):
+        path = os.path.join(self.__get_directory__(code), '%s.json' % 'index')
+        idx_list = self.__load_index__(code)
+        if date not in idx_list:
+            idx_list.append(date)
+        idx_list = self.__sort_date_list__(idx_list)
+        with open(path, 'w') as index_file:
+            index_file.write(json.dumps(idx_list))
+
+    def __load_index__(self, code):
+        idx_list = []
+        path = os.path.join(self.__get_directory__(code), '%s.json' % 'index')
+        if os.path.exists(path):
+            with open(path, 'r') as index_file:
+                idx_list = json.loads(index_file.read())
+        return idx_list
+
     def __store__(self, code, date, dict):
+        ori_date = date
         date = self.__get_year_and_month__(date)
         path = os.path.join(self.__get_directory__(code), '%s.json' %date)
         if dict != {}:
             with open(path, 'w') as json_file:
                 json_file.write(json.dumps(dict))
+                self.__store_index__(code, ori_date)
 
     def __load__(self, code, date):
         dict = {}
@@ -139,10 +158,13 @@ class TickData:
             date_list.append(j['date'])
         return date_list
 
-    def show_dates(self, code, short=False):
+    def show_dates_hard(self, code, short=False):
         path = self.__get_directory__(code)
         date_list = []
-        for i in os.listdir(path):
+        file_list = [i for i in os.listdir(path) if i[0] != '.']
+        if short == True:
+            file_list = [file_list[0], file_list[-1]]
+        for i in file_list:
             date = i[:7]
             dict = self.__load__(code, date)
             for i in dict:
@@ -152,14 +174,21 @@ class TickData:
             date_list = [date_list[0], date_list[-1]]
         return date_list
 
+    def show_dates(self, code, short=False):
+        date_list = self.__load_index__(code)
+        if short:
+            date_list = [date_list[0], date_list[-1]]
+        return date_list
+
     def show_stocks(self):
         stocks = []
         path = self.__get_directory__()
         for i in os.listdir(path):
-            stocks.append(i)
+            if i[0] != '.':
+                stocks.append(i)
         return stocks
 
-    def deposit(self, code, start, end, time_sleep=1, progress_bar=True):
+    def deposit(self, code, start, end, time_sleep=3, progress_bar=True):
         date_list = self.__generate_date_list__(code, start, end)
         date_existed = self.show_dates(code)
         length = len(date_list)
@@ -189,7 +218,10 @@ class TickData:
         if len(os.listdir(path)) == 0:
             os.rmdir(path)
 
-    def update(self, code, time_sleep=1, progress_bar=True):
-        start = self.show_dates(code)[0]
+    def update(self, code, time_sleep=1, progress_bar=True, quick=False):
+        if quick == True:
+            start = self.show_dates(code)[-1]
+        else:
+            start = self.show_dates(code)[0]
         end = self.__date_decoding__(datetime.date.today())
         self.deposit(code, start, end, time_sleep, progress_bar)
