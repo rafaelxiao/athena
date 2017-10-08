@@ -133,6 +133,9 @@ for code in code_list:
     h.show_dates('002074')
     tr.list_for_price_deviation([code], date='2017-06-04', duration=100)
 '''
+h = ms.TickData()
+for code in code_list:
+    h.update(code)
 tr.list_for_price_deviation(code_list, duration=100)
 
 

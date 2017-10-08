@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="646d338d-e749-4fae-90b3-dcc49536cf81" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/workshop/test.py" afterPath="$PROJECT_DIR$/workshop/run.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/athena.iml" afterPath="$PROJECT_DIR$/.idea/athena.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messenger/port.py" afterPath="$PROJECT_DIR$/messenger/port.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messenger/tick_fetcher.py" afterPath="$PROJECT_DIR$/messenger/tick_fetcher.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workshop/lab.py" afterPath="$PROJECT_DIR$/workshop/lab.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workshop/run.py" afterPath="$PROJECT_DIR$/workshop/run.py" />
     </list>
     <ignored path="athena.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,12 +24,39 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="run.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workshop/run.py">
+      <file leaf-file-name="lab_tick_analyzer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workshop/lab_tick_analyzer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="22" column="116" lean-forward="false" selection-start-line="22" selection-start-column="116" selection-end-line="22" selection-end-column="116" />
-              <folding />
+            <state relative-caret-position="900">
+              <caret line="69" column="25" lean-forward="false" selection-start-line="69" selection-start-column="25" selection-end-line="69" selection-end-column="25" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+                <element signature="e#401#766#0" expanded="false" />
+                <element signature="e#816#1035#0" expanded="false" />
+                <element signature="e#1090#1250#0" expanded="false" />
+                <element signature="e#1311#1479#0" expanded="false" />
+                <element signature="e#1541#1964#0" expanded="false" />
+                <element signature="e#2014#2297#0" expanded="false" />
+                <element signature="e#2347#3408#0" expanded="false" />
+                <element signature="e#5196#6496#0" expanded="false" />
+                <element signature="e#6519#11128#0" expanded="false" />
+                <element signature="e#6815#8977#0" expanded="false" />
+                <element signature="e#9021#10021#0" expanded="false" />
+                <element signature="e#10069#11128#0" expanded="false" />
+                <element signature="e#11207#13377#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="lab.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workshop/lab.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="5" column="31" lean-forward="false" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
+              <folding>
+                <element signature="e#3274#4410#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -42,7 +65,27 @@
         <entry file="file://$PROJECT_DIR$/workshop/ml.ipynb">
           <provider selected="true" editor-type-id="ipnb-editor">
             <state>
-              <selected id="0" />
+              <selected id="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="run.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/workshop/run.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="600">
+              <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="lab_price_deviation_corr.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workshop/lab_price_deviation_corr.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="22" lean-forward="false" selection-start-line="0" selection-start-column="22" selection-end-line="0" selection-end-column="22" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -59,20 +102,12 @@
       <file leaf-file-name="price_deviation.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/analyst/price_deviation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15372">
-              <caret line="436" column="8" lean-forward="false" selection-start-line="436" selection-start-column="8" selection-end-line="436" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="macd.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/analyst/macd.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="510">
+              <caret line="26" column="21" lean-forward="false" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
               <folding>
-                <element signature="e#0#22#0" expanded="true" />
+                <element signature="e#1188#29697#0" expanded="false" />
+                <element signature="e#29723#34270#0" expanded="false" />
+                <element signature="e#34271#35997#1" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -88,14 +123,30 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="lab.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/workshop/lab.py">
+      <file leaf-file-name="tick_transformer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workshop/tick_transformer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
-              <caret line="135" column="51" lean-forward="false" selection-start-line="135" selection-start-column="51" selection-end-line="135" selection-end-column="51" />
+            <state relative-caret-position="2130">
+              <caret line="257" column="45" lean-forward="false" selection-start-line="257" selection-start-column="45" selection-end-line="257" selection-end-column="45" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
-                <element signature="e#3274#4410#0" expanded="false" />
+                <element signature="e#1071#1335#0" expanded="false" />
+                <element signature="e#1390#1550#0" expanded="false" />
+                <element signature="e#1611#1779#0" expanded="false" />
+                <element signature="e#1841#2264#0" expanded="false" />
+                <element signature="e#2303#2359#0" expanded="false" />
+                <element signature="e#2403#2537#0" expanded="false" />
+                <element signature="e#2591#2685#0" expanded="false" />
+                <element signature="e#2740#3158#0" expanded="false" />
+                <element signature="e#3237#3570#0" expanded="false" />
+                <element signature="e#3648#4352#0" expanded="false" />
+                <element signature="e#4401#4738#0" expanded="false" />
+                <element signature="e#4856#5956#0" expanded="false" />
+                <element signature="e#6070#7391#0" expanded="false" />
+                <element signature="e#7451#7886#0" expanded="false" />
+                <element signature="e#7978#8950#0" expanded="false" />
+                <element signature="e#9062#9834#0" expanded="false" />
+                <element signature="e#9947#10704#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -104,28 +155,8 @@
       <file leaf-file-name="tick_fetcher.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/messenger/tick_fetcher.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6624">
+            <state relative-caret-position="5520">
               <caret line="190" column="52" lean-forward="false" selection-start-line="190" selection-start-column="52" selection-end-line="190" selection-end-column="52" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="port.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/messenger/port.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/server/test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2016">
-              <caret line="57" column="0" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -151,9 +182,13 @@
       <find>os.getcwd()</find>
       <find>mk</find>
       <find>__generate_date_list__</find>
-      <find>print</find>
       <find>index</find>
       <find>__store__</find>
+      <find>print</find>
+      <find>cut_ratio</find>
+      <find>row</find>
+      <find>str</find>
+      <find>apply</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -162,22 +197,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/workshop/lab_HotMap.py" />
-        <option value="$PROJECT_DIR$/messenger/basics.csv" />
-        <option value="$PROJECT_DIR$/analyst/basic.py" />
-        <option value="$PROJECT_DIR$/workshop/peak_signal_1.txt" />
-        <option value="$PROJECT_DIR$/workshop/peak_signal_12.txt" />
-        <option value="$PROJECT_DIR$/workshop/601116.txt" />
-        <option value="$PROJECT_DIR$/workshop/lab_TickStructure.py" />
-        <option value="$PROJECT_DIR$/workshop/lab_TickStrux.py" />
-        <option value="$PROJECT_DIR$/workshop/lab_TickStruc.py" />
-        <option value="$PROJECT_DIR$/workshop/lab_StockValuation.py" />
         <option value="$PROJECT_DIR$/workshop/test2.py" />
         <option value="$PROJECT_DIR$/workshop/lab_PostBuyStopScanner.py" />
         <option value="$PROJECT_DIR$/workshop/saved.txt" />
         <option value="$PROJECT_DIR$/workshop/lab_StockPick.py" />
         <option value="$PROJECT_DIR$/analyst/price_deviation_bak.py" />
-        <option value="$PROJECT_DIR$/assistant/process.py" />
         <option value="$PROJECT_DIR$/workshop/lab_FastSlow.py" />
         <option value="$PROJECT_DIR$/workshop/lab_StockAccount.py" />
         <option value="$PROJECT_DIR$/analyst/stock_account.py" />
@@ -210,17 +234,28 @@
         <option value="$PROJECT_DIR$/workshop/test.py" />
         <option value="$PROJECT_DIR$/messenger/port.py" />
         <option value="$PROJECT_DIR$/messenger/tick_fetcher.py" />
+        <option value="$PROJECT_DIR$/analyst/smart_money.py" />
+        <option value="$PROJECT_DIR$/assistant/process.py" />
         <option value="$PROJECT_DIR$/workshop/playground.ipynb" />
-        <option value="$PROJECT_DIR$/workshop/run.py" />
         <option value="$PROJECT_DIR$/workshop/lab.py" />
+        <option value="$PROJECT_DIR$/workshop/tick_summary/000625.txt" />
+        <option value="$PROJECT_DIR$/workshop/tick_summary/002074.txt" />
+        <option value="$PROJECT_DIR$/workshop/tick_summary/000625-period-summary-2017-06-15-10.txt" />
+        <option value="$PROJECT_DIR$/workshop/tick_summary/002074-period-summary-2017-06-15-10.txt" />
+        <option value="$PROJECT_DIR$/workshop/lab_tick_analyzer.py" />
+        <option value="$PROJECT_DIR$/workshop/tick_spacer.py" />
+        <option value="$PROJECT_DIR$/workshop/tick_transformer.py" />
+        <option value="$PROJECT_DIR$/workshop/ml.ipynb" />
+        <option value="$PROJECT_DIR$/workshop/lab_price_deviation_corr.py" />
+        <option value="$PROJECT_DIR$/workshop/run.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-11" />
-    <option name="y" value="-11" />
-    <option name="width" value="1932" />
-    <option name="height" value="1042" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="2578" />
+    <option name="height" value="1408" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -240,8 +275,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -282,7 +315,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="graph" />
+              <option name="myItemId" value=".ipynb_checkpoints" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -358,24 +391,26 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$/Miniconda3/envs/athena/python.exe" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Xiao\Desktop\athena\workshop" />
+      <recent name="$PROJECT_DIR$/workshop" />
+      <recent name="C:\Users\Xiao\Desktop\athena\analyst" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Xiao\Desktop\athena\messenger" />
       <recent name="C:\Users\Xiao\Desktop\athena\workshop" />
       <recent name="C:\Users\Xiao\Desktop\athena\trader" />
       <recent name="C:\Users\Xiao\Desktop\athena\analyst" />
       <recent name="$PROJECT_DIR$/messenger" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Xiao\Desktop\athena\workshop" />
-      <recent name="$PROJECT_DIR$/workshop" />
-      <recent name="C:\Users\Xiao\Desktop\athena\analyst" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -390,77 +425,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.lab">
-    <configuration default="false" name="lab_area_detail" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/workshop" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="athena" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/workshop/lab_area_detail.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="lab" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/workshop" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="athena" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/workshop/lab.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="lab_tick_fetcher" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/workshop" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="athena" />
-      <option name="SCRIPT_NAME" value="C:\Users\Xiao\Desktop\athena\messenger\tick_fetcher.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="Nosetests in run.py" type="tests" factoryName="Nosetests" temporary="true" nameIsGenerated="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/workshop" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="athena" />
-      <option name="_new_regexPattern" value="&quot;&quot;" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;$PROJECT_DIR$/workshop/run.py&quot;" />
-      <option name="_new_targetType" value="&quot;PATH&quot;" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.run">
     <configuration default="false" name="run" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -474,6 +439,78 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="athena" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/workshop/run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="lab_tick_analyzer" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/workshop" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="athena" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/workshop/lab_tick_analyzer.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="tick_transformer" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/workshop" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="athena" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/workshop/tick_transformer.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="lab_price_deviation_corr" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/workshop" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="athena" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/workshop/lab_price_deviation_corr.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="price_deviation" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/analyst" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="athena" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/analyst/price_deviation.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -576,19 +613,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.lab_area_detail" />
-      <item index="1" class="java.lang.String" itemvalue="Python.lab" />
-      <item index="2" class="java.lang.String" itemvalue="Python.lab_tick_fetcher" />
-      <item index="3" class="java.lang.String" itemvalue="Python tests.Nosetests in run.py" />
-      <item index="4" class="java.lang.String" itemvalue="Python.run" />
+      <item index="0" class="java.lang.String" itemvalue="Python.run" />
+      <item index="1" class="java.lang.String" itemvalue="Python.lab_tick_analyzer" />
+      <item index="2" class="java.lang.String" itemvalue="Python.tick_transformer" />
+      <item index="3" class="java.lang.String" itemvalue="Python.lab_price_deviation_corr" />
+      <item index="4" class="java.lang.String" itemvalue="Python.price_deviation" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.lab" />
-        <item index="1" class="java.lang.String" itemvalue="Python.run" />
-        <item index="2" class="java.lang.String" itemvalue="Python tests.Nosetests in run.py" />
-        <item index="3" class="java.lang.String" itemvalue="Python.lab_tick_fetcher" />
-        <item index="4" class="java.lang.String" itemvalue="Python.lab_area_detail" />
+        <item index="0" class="java.lang.String" itemvalue="Python.run" />
+        <item index="1" class="java.lang.String" itemvalue="Python.price_deviation" />
+        <item index="2" class="java.lang.String" itemvalue="Python.lab_price_deviation_corr" />
+        <item index="3" class="java.lang.String" itemvalue="Python.tick_transformer" />
+        <item index="4" class="java.lang.String" itemvalue="Python.lab_tick_analyzer" />
       </list>
     </recent_temporary>
     <configuration default="true" type="tests" factoryName="Attests">
@@ -651,14 +688,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-11" y="-11" width="1932" height="1042" extended-state="0" />
+    <frame x="-9" y="-9" width="2578" height="1408" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26630434" sideWeight="0.49371633" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19784173" sideWeight="0.49371633" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3209169" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32197416" sideWeight="0.5018548" order="6" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33293697" sideWeight="0.4981452" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32234958" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3696275" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22767498" sideWeight="0.4981452" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3220339" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28329298" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.327252" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39788732" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -716,83 +754,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="10" />
+      <option name="time" value="22" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/agent/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/workshop/graph/000651-2017-04-24-300-1.txt" />
-    <entry file="file://$PROJECT_DIR$/workshop/graph/600313-2017-04-24-300-1.txt" />
-    <entry file="file://$PROJECT_DIR$/workshop/graph/000625-3-10--10 2011-07-14to2012-11-30.png" />
-    <entry file="file://$PROJECT_DIR$/workshop/.ipynb_checkpoints/Untitled-checkpoint.ipynb" />
-    <entry file="file://$PROJECT_DIR$/workshop/graph/600313-2017-05-04-200-3.png" />
-    <entry file="file://$USER_HOME$/Miniconda3/envs/athena/Lib/site-packages/numpy/core/_methods.py" />
-    <entry file="file://$PROJECT_DIR$/workshop/graph/002074-2012-11-30-330-3.txt" />
-    <entry file="file://$PROJECT_DIR$/workshop/lab_StratCarrier.py" />
-    <entry file="file://$PROJECT_DIR$/workshop/lab_FastSlow.py" />
-    <entry file="file://$PROJECT_DIR$/workshop/lab_PriceDevAna.py" />
-    <entry file="file://$PROJECT_DIR$/workshop/lab_diff_area.py" />
-    <entry file="file://$PROJECT_DIR$/workshop/lab_top_and_down.py" />
-    <entry file="file://$PROJECT_DIR$/workshop/lab_StockPicker.py" />
-    <entry file="file://$PROJECT_DIR$/trader/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="4" column="134" lean-forward="false" selection-start-line="4" selection-start-column="134" selection-end-line="4" selection-end-column="134" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/workshop/lab_area_detail.py" />
-    <entry file="file://$USER_HOME$/Miniconda3/envs/athena/Lib/site-packages/astropy/vo/client/vos_catalog.py" />
-    <entry file="file://$PROJECT_DIR$/workshop/ticks/000625/2016-09.json" />
-    <entry file="file://$PROJECT_DIR$/workshop/ticks/600313/2017-05.json" />
-    <entry file="file://$PROJECT_DIR$/workshop/ticks/600313/2017-06.json" />
-    <entry file="file://$PROJECT_DIR$/messenger/data/basics.csv" />
-    <entry file="file://$PROJECT_DIR$/messenger/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="37" lean-forward="false" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharmCE2017.1/system/python_stubs/-1786159306/nt.py" />
-    <entry file="file://$PROJECT_DIR$/analyst/stock_picker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="41" column="96" lean-forward="false" selection-start-line="41" selection-start-column="96" selection-end-line="41" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assistant/date_and_time.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1782">
-          <caret line="83" column="22" lean-forward="false" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/assistant/process.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-139">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/workshop/graph/600313-2017-06-02-200-3.png" />
-    <entry file="file://$USER_HOME$/miniconda3/envs/athena/lib/python3.6/site-packages/tushare/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/analyst/smart_money.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3708">
-          <caret line="104" column="40" lean-forward="false" selection-start-line="104" selection-start-column="40" selection-end-line="104" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/trader/strategy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="162" column="20" lean-forward="false" selection-start-line="162" selection-start-column="20" selection-end-line="162" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/trader/stock_account.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="27036">
@@ -866,28 +832,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/analyst/price_deviation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15372">
-          <caret line="436" column="8" lean-forward="false" selection-start-line="436" selection-start-column="8" selection-end-line="436" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/analyst/macd.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#22#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/workshop/ml.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="0" />
         </state>
       </provider>
     </entry>
@@ -895,7 +843,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
           <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -903,22 +850,112 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2016">
           <caret line="57" column="0" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/messenger/tick_fetcher.py">
+    <entry file="file://$PROJECT_DIR$/analyst/smart_money.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6624">
-          <caret line="190" column="52" lean-forward="false" selection-start-line="190" selection-start-column="52" selection-end-line="190" selection-end-column="52" />
-          <folding />
+        <state relative-caret-position="36">
+          <caret line="104" column="40" lean-forward="false" selection-start-line="104" selection-start-column="40" selection-end-line="104" selection-end-column="40" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workshop/playground.ipynb">
+    <entry file="file://$PROJECT_DIR$/workshop/.ipynb_checkpoints/playground-checkpoint.ipynb">
       <provider selected="true" editor-type-id="ipnb-editor">
         <state>
-          <selected id="1" />
+          <selected id="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analyst/stock_picker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1476">
+          <caret line="41" column="96" lean-forward="false" selection-start-line="41" selection-start-column="96" selection-end-line="41" selection-end-column="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assistant/process.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="10" column="19" lean-forward="false" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/graph/000625-2017-06-14-100-3.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/002074.txt" />
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/000625.txt" />
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/002074-period-summary-2017-06-15-20.txt" />
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/000625-period-summary-2017-06-15-20.txt" />
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/000625-period-summary-2017-06-15-10.txt" />
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/002074-period-summary-2017-06-15-10.txt" />
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/000625-period-summary-2017-06-15-5.txt" />
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/002074-period-summary-2017-06-15-5.txt" />
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/002074-period-summary-2017-06-02-5.txt" />
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/000625-period-summary-2017-06-02-5.txt" />
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/000625-period-summary-2017-05-10-5.txt" />
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/000625-period-summary-2017-05-23-5.txt" />
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/002074-period-summary-2017-06-14-5.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2736">
+          <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/000625-period-top-summary-2017-06-14-5.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2808">
+          <caret line="78" column="0" lean-forward="false" selection-start-line="78" selection-start-column="0" selection-end-line="82" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/002074-period-top-summary-2017-06-14-5.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3168">
+          <caret line="88" column="16" lean-forward="false" selection-start-line="88" selection-start-column="16" selection-end-line="88" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/000625-period-summary-2017-06-14-5.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2520">
+          <caret line="84" column="20" lean-forward="false" selection-start-line="84" selection-start-column="20" selection-end-line="84" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/tick_summary/000625-2017-06-15-50.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16440">
+          <caret line="548" column="24" lean-forward="false" selection-start-line="548" selection-start-column="0" selection-end-line="549" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/graph/000625-2017-06-16-100-3.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Miniconda3/envs/athena/Lib/site-packages/pandas/core/generic.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80700">
+          <caret line="2743" column="0" lean-forward="false" selection-start-line="2743" selection-start-column="0" selection-end-line="2743" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assistant/date_and_time.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="11" column="35" lean-forward="false" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Miniconda3/envs/athena/Lib/site-packages/matplotlib/cbook.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3330">
+          <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -930,22 +967,114 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workshop/run.py">
+    <entry file="file://$PROJECT_DIR$/workshop/Untitled.ipynb" />
+    <entry file="file://$PROJECT_DIR$/workshop/ml.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/playground.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/tick_transformer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="22" column="116" lean-forward="false" selection-start-line="22" selection-start-column="116" selection-end-line="22" selection-end-column="116" />
+        <state relative-caret-position="2130">
+          <caret line="257" column="45" lean-forward="false" selection-start-line="257" selection-start-column="45" selection-end-line="257" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+            <element signature="e#1071#1335#0" expanded="false" />
+            <element signature="e#1390#1550#0" expanded="false" />
+            <element signature="e#1611#1779#0" expanded="false" />
+            <element signature="e#1841#2264#0" expanded="false" />
+            <element signature="e#2303#2359#0" expanded="false" />
+            <element signature="e#2403#2537#0" expanded="false" />
+            <element signature="e#2591#2685#0" expanded="false" />
+            <element signature="e#2740#3158#0" expanded="false" />
+            <element signature="e#3237#3570#0" expanded="false" />
+            <element signature="e#3648#4352#0" expanded="false" />
+            <element signature="e#4401#4738#0" expanded="false" />
+            <element signature="e#4856#5956#0" expanded="false" />
+            <element signature="e#6070#7391#0" expanded="false" />
+            <element signature="e#7451#7886#0" expanded="false" />
+            <element signature="e#7978#8950#0" expanded="false" />
+            <element signature="e#9062#9834#0" expanded="false" />
+            <element signature="e#9947#10704#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/lab_tick_analyzer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="69" column="25" lean-forward="false" selection-start-line="69" selection-start-column="25" selection-end-line="69" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+            <element signature="e#401#766#0" expanded="false" />
+            <element signature="e#816#1035#0" expanded="false" />
+            <element signature="e#1090#1250#0" expanded="false" />
+            <element signature="e#1311#1479#0" expanded="false" />
+            <element signature="e#1541#1964#0" expanded="false" />
+            <element signature="e#2014#2297#0" expanded="false" />
+            <element signature="e#2347#3408#0" expanded="false" />
+            <element signature="e#5196#6496#0" expanded="false" />
+            <element signature="e#6519#11128#0" expanded="false" />
+            <element signature="e#6815#8977#0" expanded="false" />
+            <element signature="e#9021#10021#0" expanded="false" />
+            <element signature="e#10069#11128#0" expanded="false" />
+            <element signature="e#11207#13377#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/lab_price_deviation_corr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="22" lean-forward="false" selection-start-line="0" selection-start-column="22" selection-end-line="0" selection-end-column="22" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/messenger/tick_fetcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5520">
+          <caret line="190" column="52" lean-forward="false" selection-start-line="190" selection-start-column="52" selection-end-line="190" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analyst/price_deviation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="26" column="21" lean-forward="false" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
+          <folding>
+            <element signature="e#1188#29697#0" expanded="false" />
+            <element signature="e#29723#34270#0" expanded="false" />
+            <element signature="e#34271#35997#1" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workshop/lab.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="135" column="51" lean-forward="false" selection-start-line="135" selection-start-column="51" selection-end-line="135" selection-end-column="51" />
+        <state relative-caret-position="150">
+          <caret line="5" column="31" lean-forward="false" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
           <folding>
-            <element signature="e#0#20#0" expanded="true" />
             <element signature="e#3274#4410#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
