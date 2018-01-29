@@ -13,12 +13,11 @@ import tensorflow as tf
 from sklearn import svm
 
 
-code_list = ['000625', '002074', '000022']
+code_list = ['000625', '601318', '000022']
 
 h = ms.TickData()
 s = h.show_stocks()
 for code in code_list:
     h.update(code)
 
-tr.list_for_price_deviation(code_list, duration=200, smooth=7)
-
+tr.list_for_price_deviation(code_list, duration=300, smooth=3)

@@ -103,9 +103,10 @@ def complete_stock_list():
     Generate a complete list of stock
     :return: A list of stock
     '''
-    path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), local_data['basics']))
-    list = pd.read_csv(path, dtype='str')
-    list = list.code.tolist()
+    # path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), local_data['basics']))
+    # list = pd.read_csv(path, dtype='str')
+    list = get_stock_basics(local=True)
+    list = list.index.tolist()
     return list
 
 def get_stock_hist_data(code, date, type=''):

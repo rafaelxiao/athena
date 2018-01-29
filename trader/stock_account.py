@@ -29,6 +29,11 @@ class Unit():
         return valid
 
     def is_valid_unit(self, unit):
+        '''
+        Test if an unit input is valid
+        :param unit: the valid input
+        :return: boolean
+        '''
         try:
             name = unit['name']
             amount = unit['amount']
@@ -48,6 +53,13 @@ class Unit():
             return number
 
     def make_a_unit(self, name, amount, ratio):
+        '''
+        Create a unit data structure
+        :param name: str, the name
+        :param amount: float, the amount
+        :param ratio: float, the rate to base currency
+        :return:
+        '''
         amount = self.__convert_to_float__(amount)
         ratio = self.__convert_to_float__(ratio)
         if self.__is_valid_inputs__(name, amount, ratio):
@@ -57,18 +69,35 @@ class Unit():
         return content
 
     def show_amount(self, unit):
+        '''
+        Check the amount
+        :param unit: the unit to check
+        :return: the amount
+        '''
         if self.is_valid_unit(unit):
             return unit['amount']
         else:
             return 0
 
     def show_ratio(self, unit):
+        '''
+        Check the rate to base currency of the unit
+        :param unit: the unit to check
+        :return: the rate to base currency
+        '''
         if self.is_valid_unit(unit):
             return unit['ratio']
         else:
             return 0
 
     def update(self, content, unit, type):
+        '''
+        Update a current unit
+        :param content: the updated content
+        :param unit: the target unit
+        :param type: the target type
+        :return:
+        '''
         if self.is_valid_unit(unit):
             origin = dict(unit)
             unit[type] = content
@@ -92,6 +121,10 @@ class Portfolio():
                 self.portfolio = loaded
 
     def save(self):
+        '''
+        Transfer the whole class to string
+        :return: string
+        '''
         content = self.unit_splitter.join([str(i) for i in self.portfolio])
         return content
 
@@ -182,6 +215,13 @@ class Portfolio():
         return result
 
     def buy(self, name, amount, ratio):
+        '''
+        Perform a buy
+        :param name: the name of the target
+        :param amount: the amount to buy
+        :param ratio: the ratio to the base currency
+        :return:
+        '''
         entry = self.agent_unit.make_a_unit(name, amount, ratio)
         if self.agent_unit.is_valid_unit(entry):
             if self.__sufficient_fund__(entry):
@@ -192,11 +232,21 @@ class Portfolio():
                 self.__check__()
 
     def deposit(self, amount):
+        '''
+        Deposit amount in base currency
+        :param amount: the amount to deposit
+        :return:
+        '''
         entry = self.agent_unit.make_a_unit(self.portfolio[0]['name'], amount, self.portfolio[0]['ratio'])
         if self.agent_unit.is_valid_unit(entry):
             self.__combine__(entry)
 
     def withdraw(self, amount):
+        '''
+        Withdraw the amount in base currency
+        :param amount: the amount to withdraw
+        :return:
+        '''
         entry = self.agent_unit.make_a_unit(self.portfolio[0]['name'], amount, self.portfolio[0]['ratio'])
         if self.agent_unit.is_valid_unit(entry):
             if self.__sufficient_fund__(entry):
@@ -205,6 +255,13 @@ class Portfolio():
                 self.__combine__(entry)
 
     def sell(self, name, amount, ratio):
+        '''
+        Perform a sell
+        :param name: the name of the target
+        :param amount: the amount to sell
+        :param ratio: the ratio to the base currency
+        :return:
+        '''
         entry = self.agent_unit.make_a_unit(name, -amount, ratio)
         if self.agent_unit.is_valid_unit(entry):
             amount_available = self.__get_value__(entry['name'], 'amount')
@@ -217,12 +274,22 @@ class Portfolio():
                     self.__check__()
 
     def value_porfolio(self):
+        '''
+        Get the value of the portfolio
+        :return:
+        '''
         total = 0.0
         for i in self.portfolio:
             total += self.__value__(i)
         return total
 
     def show(self, name=None, type='name'):
+        '''
+        Check the detail of a entry in the portfolio
+        :param name: string, the name of the unit, if blank, then return the base currency
+        :param type: the detail checked in the unit
+        :return:
+        '''
         content = None
         if name == None:
             name = self.portfolio[0]['name']
@@ -232,6 +299,12 @@ class Portfolio():
         return content
 
     def update_ratio(self, name, ratio):
+        '''
+        Update the ratio to base currency, the ratio means, eg. price
+        :param name: the name of the unit
+        :param ratio: the updated ratio
+        :return:
+        '''
         idx = self.__find_index__(name)
         if idx != -1:
             updated = dict(self.portfolio[idx])
@@ -893,6 +966,13 @@ class StockAccountPerformance():
         return result
 
 def portfolio_performance(list, idx='sh', type='close', method='save'):
+    '''
+    :param list:
+    :param idx:
+    :param type:
+    :param method:
+    :return:
+    '''
     list_loaded = list.strip().split('\n')
     list_loaded = [i.strip() for i in list_loaded]
     list = []

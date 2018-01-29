@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="646d338d-e749-4fae-90b3-dcc49536cf81" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workshop/lab.py" afterPath="$PROJECT_DIR$/workshop/lab.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/analyst/price_deviation.py" afterPath="$PROJECT_DIR$/analyst/price_deviation.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/messenger/port.py" afterPath="$PROJECT_DIR$/messenger/port.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/trader/stock_account.py" afterPath="$PROJECT_DIR$/trader/stock_account.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workshop/ml.ipynb" afterPath="$PROJECT_DIR$/workshop/ml.ipynb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/workshop/run.py" afterPath="$PROJECT_DIR$/workshop/run.py" />
     </list>
     <ignored path="athena.iws" />
@@ -24,31 +27,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="450">
-      <file leaf-file-name="lab_tick_analyzer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workshop/lab_tick_analyzer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="900">
-              <caret line="69" column="25" lean-forward="false" selection-start-line="69" selection-start-column="25" selection-end-line="69" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#20#0" expanded="true" />
-                <element signature="e#401#766#0" expanded="false" />
-                <element signature="e#816#1035#0" expanded="false" />
-                <element signature="e#1090#1250#0" expanded="false" />
-                <element signature="e#1311#1479#0" expanded="false" />
-                <element signature="e#1541#1964#0" expanded="false" />
-                <element signature="e#2014#2297#0" expanded="false" />
-                <element signature="e#2347#3408#0" expanded="false" />
-                <element signature="e#5196#6496#0" expanded="false" />
-                <element signature="e#6519#11128#0" expanded="false" />
-                <element signature="e#6815#8977#0" expanded="false" />
-                <element signature="e#9021#10021#0" expanded="false" />
-                <element signature="e#10069#11128#0" expanded="false" />
-                <element signature="e#11207#13377#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="lab.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/workshop/lab.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -61,21 +39,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ml.ipynb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workshop/ml.ipynb">
-          <provider selected="true" editor-type-id="ipnb-editor">
-            <state>
-              <selected id="1" />
+      <file leaf-file-name="run.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/workshop/run.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="630">
+              <caret line="22" column="61" lean-forward="false" selection-start-line="22" selection-start-column="61" selection-end-line="22" selection-end-column="61" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="run.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/workshop/run.py">
+      <file leaf-file-name="000625-2014-11-07-300-7.png" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/workshop/graph/000625-2014-11-07-300-7.png">
+          <provider selected="true" editor-type-id="images">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="agent.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/trader/agent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+            <state relative-caret-position="930">
+              <caret line="34" column="4" lean-forward="false" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="strategy.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/trader/strategy.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#20#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -90,73 +88,43 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="playground.ipynb" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workshop/playground.ipynb">
-          <provider selected="true" editor-type-id="ipnb-editor">
-            <state>
-              <selected id="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="price_deviation.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/analyst/price_deviation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="26" column="21" lean-forward="false" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
+            <state relative-caret-position="11460">
+              <caret line="391" column="75" lean-forward="false" selection-start-line="391" selection-start-column="75" selection-end-line="391" selection-end-column="75" />
               <folding>
-                <element signature="e#1188#29697#0" expanded="false" />
-                <element signature="e#29723#34270#0" expanded="false" />
-                <element signature="e#34271#35997#1" expanded="false" />
+                <element signature="e#34322#36048#1" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="server.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workshop/server.py">
+      <file leaf-file-name="port.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/messenger/port.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="2640">
+              <caret line="93" column="28" lean-forward="false" selection-start-line="93" selection-start-column="28" selection-end-line="93" selection-end-column="28" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tick_transformer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/workshop/tick_transformer.py">
+      <file leaf-file-name="stock_account.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/trader/stock_account.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2130">
-              <caret line="257" column="45" lean-forward="false" selection-start-line="257" selection-start-column="45" selection-end-line="257" selection-end-column="45" />
-              <folding>
-                <element signature="e#0#20#0" expanded="true" />
-                <element signature="e#1071#1335#0" expanded="false" />
-                <element signature="e#1390#1550#0" expanded="false" />
-                <element signature="e#1611#1779#0" expanded="false" />
-                <element signature="e#1841#2264#0" expanded="false" />
-                <element signature="e#2303#2359#0" expanded="false" />
-                <element signature="e#2403#2537#0" expanded="false" />
-                <element signature="e#2591#2685#0" expanded="false" />
-                <element signature="e#2740#3158#0" expanded="false" />
-                <element signature="e#3237#3570#0" expanded="false" />
-                <element signature="e#3648#4352#0" expanded="false" />
-                <element signature="e#4401#4738#0" expanded="false" />
-                <element signature="e#4856#5956#0" expanded="false" />
-                <element signature="e#6070#7391#0" expanded="false" />
-                <element signature="e#7451#7886#0" expanded="false" />
-                <element signature="e#7978#8950#0" expanded="false" />
-                <element signature="e#9062#9834#0" expanded="false" />
-                <element signature="e#9947#10704#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="23880">
+              <caret line="807" column="102" lean-forward="false" selection-start-line="807" selection-start-column="102" selection-end-line="807" selection-end-column="102" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tick_fetcher.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/messenger/tick_fetcher.py">
+      <file leaf-file-name="strategy_tools.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/trader/strategy_tools.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5520">
-              <caret line="190" column="52" lean-forward="false" selection-start-line="190" selection-start-column="52" selection-end-line="190" selection-end-column="52" />
+            <state relative-caret-position="3780">
+              <caret line="137" column="31" lean-forward="false" selection-start-line="137" selection-start-column="31" selection-end-line="137" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -189,6 +157,8 @@
       <find>row</find>
       <find>str</find>
       <find>apply</find>
+      <find>show</find>
+      <find>basics</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -210,7 +180,6 @@
         <option value="$PROJECT_DIR$/agent/agent.py" />
         <option value="$PROJECT_DIR$/assistant/date_and_time.py" />
         <option value="$PROJECT_DIR$/messenger/port_tushare.py" />
-        <option value="$PROJECT_DIR$/trader/stock_account.py" />
         <option value="$PROJECT_DIR$/agent/__init__.py" />
         <option value="$PROJECT_DIR$/workshop/Untitled.ipynb" />
         <option value="$PROJECT_DIR$/server/test.py" />
@@ -226,17 +195,14 @@
         <option value="$PROJECT_DIR$/trader/strategy.py" />
         <option value="$PROJECT_DIR$/trader/__init__.py" />
         <option value="$PROJECT_DIR$/workshop/lab_area_detail.py" />
-        <option value="$PROJECT_DIR$/analyst/price_deviation.py" />
         <option value="$PROJECT_DIR$/trader/strategy_tools.py" />
         <option value="$PROJECT_DIR$/workshop/graph/lab_tick_fetcher.py" />
         <option value="$PROJECT_DIR$/workshop/lab_tick_fetcher.py" />
         <option value="$PROJECT_DIR$/messenger/__init__.py" />
         <option value="$PROJECT_DIR$/workshop/test.py" />
-        <option value="$PROJECT_DIR$/messenger/port.py" />
         <option value="$PROJECT_DIR$/messenger/tick_fetcher.py" />
         <option value="$PROJECT_DIR$/analyst/smart_money.py" />
         <option value="$PROJECT_DIR$/assistant/process.py" />
-        <option value="$PROJECT_DIR$/workshop/playground.ipynb" />
         <option value="$PROJECT_DIR$/workshop/lab.py" />
         <option value="$PROJECT_DIR$/workshop/tick_summary/000625.txt" />
         <option value="$PROJECT_DIR$/workshop/tick_summary/002074.txt" />
@@ -247,15 +213,18 @@
         <option value="$PROJECT_DIR$/workshop/tick_transformer.py" />
         <option value="$PROJECT_DIR$/workshop/ml.ipynb" />
         <option value="$PROJECT_DIR$/workshop/lab_price_deviation_corr.py" />
+        <option value="$PROJECT_DIR$/analyst/price_deviation.py" />
+        <option value="$PROJECT_DIR$/trader/stock_account.py" />
+        <option value="$PROJECT_DIR$/workshop/playground.ipynb" />
+        <option value="$PROJECT_DIR$/messenger/port.py" />
         <option value="$PROJECT_DIR$/workshop/run.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="2578" />
-    <option name="height" value="1408" />
+    <option name="x" value="-8" />
+    <option name="width" value="1296" />
+    <option name="height" value="1398" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -315,7 +284,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".ipynb_checkpoints" />
+              <option name="myItemId" value="graph" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -391,12 +360,12 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Neurons" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -688,13 +657,13 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="2578" height="1408" extended-state="6" />
+    <frame x="-8" y="0" width="1296" height="1398" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19784173" sideWeight="0.49371633" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.43114755" sideWeight="0.49371633" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3209169" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32197416" sideWeight="0.5018548" order="6" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22767498" sideWeight="0.4981452" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22767498" sideWeight="0.4981452" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3220339" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28329298" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -759,34 +728,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/trader/stock_account.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="27036">
-          <caret line="762" column="8" lean-forward="false" selection-start-line="762" selection-start-column="8" selection-end-line="762" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/trader/strategy_tools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4104">
-          <caret line="156" column="0" lean-forward="false" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analyst/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="5" column="44" lean-forward="false" selection-start-line="5" selection-start-column="44" selection-end-line="5" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analyst/basic.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/analyst/kdj.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -798,13 +739,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/trader/agent.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1116">
-          <caret line="34" column="4" lean-forward="false" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -839,13 +773,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/messenger/port.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2016">
@@ -860,20 +787,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workshop/.ipynb_checkpoints/playground-checkpoint.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analyst/stock_picker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1476">
-          <caret line="41" column="96" lean-forward="false" selection-start-line="41" selection-start-column="96" selection-end-line="41" selection-end-column="96" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/.ipynb_checkpoints/playground-checkpoint.ipynb" />
     <entry file="file://$PROJECT_DIR$/assistant/process.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="324">
@@ -963,15 +877,35 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/workshop/Untitled.ipynb" />
-    <entry file="file://$PROJECT_DIR$/workshop/ml.ipynb">
-      <provider selected="true" editor-type-id="ipnb-editor">
-        <state>
-          <selected id="1" />
+    <entry file="file://$PROJECT_DIR$/analyst/stock_picker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="780">
+          <caret line="26" column="8" lean-forward="false" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/messenger/tick_fetcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1110">
+          <caret line="190" column="52" lean-forward="false" selection-start-line="190" selection-start-column="52" selection-end-line="190" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/tick_transformer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="930">
+          <caret line="257" column="45" lean-forward="false" selection-start-line="257" selection-start-column="45" selection-end-line="257" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/lab_tick_analyzer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="69" column="25" lean-forward="false" selection-start-line="69" selection-start-column="25" selection-end-line="69" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -982,53 +916,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workshop/tick_transformer.py">
+    <entry file="file://$PROJECT_DIR$/workshop/ml.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trader/strategy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2130">
-          <caret line="257" column="45" lean-forward="false" selection-start-line="257" selection-start-column="45" selection-end-line="257" selection-end-column="45" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
-            <element signature="e#1071#1335#0" expanded="false" />
-            <element signature="e#1390#1550#0" expanded="false" />
-            <element signature="e#1611#1779#0" expanded="false" />
-            <element signature="e#1841#2264#0" expanded="false" />
-            <element signature="e#2303#2359#0" expanded="false" />
-            <element signature="e#2403#2537#0" expanded="false" />
-            <element signature="e#2591#2685#0" expanded="false" />
-            <element signature="e#2740#3158#0" expanded="false" />
-            <element signature="e#3237#3570#0" expanded="false" />
-            <element signature="e#3648#4352#0" expanded="false" />
-            <element signature="e#4401#4738#0" expanded="false" />
-            <element signature="e#4856#5956#0" expanded="false" />
-            <element signature="e#6070#7391#0" expanded="false" />
-            <element signature="e#7451#7886#0" expanded="false" />
-            <element signature="e#7978#8950#0" expanded="false" />
-            <element signature="e#9062#9834#0" expanded="false" />
-            <element signature="e#9947#10704#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/workshop/lab_tick_analyzer.py">
+    <entry file="file://$PROJECT_DIR$/trader/strategy_tools.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="900">
-          <caret line="69" column="25" lean-forward="false" selection-start-line="69" selection-start-column="25" selection-end-line="69" selection-end-column="25" />
+        <state relative-caret-position="3780">
+          <caret line="137" column="31" lean-forward="false" selection-start-line="137" selection-start-column="31" selection-end-line="137" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/analyst/price_deviation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11460">
+          <caret line="391" column="75" lean-forward="false" selection-start-line="391" selection-start-column="75" selection-end-line="391" selection-end-column="75" />
           <folding>
-            <element signature="e#0#20#0" expanded="true" />
-            <element signature="e#401#766#0" expanded="false" />
-            <element signature="e#816#1035#0" expanded="false" />
-            <element signature="e#1090#1250#0" expanded="false" />
-            <element signature="e#1311#1479#0" expanded="false" />
-            <element signature="e#1541#1964#0" expanded="false" />
-            <element signature="e#2014#2297#0" expanded="false" />
-            <element signature="e#2347#3408#0" expanded="false" />
-            <element signature="e#5196#6496#0" expanded="false" />
-            <element signature="e#6519#11128#0" expanded="false" />
-            <element signature="e#6815#8977#0" expanded="false" />
-            <element signature="e#9021#10021#0" expanded="false" />
-            <element signature="e#10069#11128#0" expanded="false" />
-            <element signature="e#11207#13377#0" expanded="false" />
+            <element signature="e#34322#36048#1" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/messenger/port.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2640">
+          <caret line="93" column="28" lean-forward="false" selection-start-line="93" selection-start-column="28" selection-end-line="93" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trader/stock_account.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23880">
+          <caret line="807" column="102" lean-forward="false" selection-start-line="807" selection-start-column="102" selection-end-line="807" selection-end-column="102" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1037,26 +972,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="22" lean-forward="false" selection-start-line="0" selection-start-column="22" selection-end-line="0" selection-end-column="22" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/messenger/tick_fetcher.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5520">
-          <caret line="190" column="52" lean-forward="false" selection-start-line="190" selection-start-column="52" selection-end-line="190" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/analyst/price_deviation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="26" column="21" lean-forward="false" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
-          <folding>
-            <element signature="e#1188#29697#0" expanded="false" />
-            <element signature="e#29723#34270#0" expanded="false" />
-            <element signature="e#34271#35997#1" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1070,10 +985,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/trader/agent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="930">
+          <caret line="34" column="4" lean-forward="false" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/workshop/graph/000625-2014-11-07-300-7.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/workshop/run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+        <state relative-caret-position="630">
+          <caret line="22" column="61" lean-forward="false" selection-start-line="22" selection-start-column="61" selection-end-line="22" selection-end-column="61" />
           <folding />
         </state>
       </provider>

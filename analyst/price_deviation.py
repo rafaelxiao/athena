@@ -429,6 +429,7 @@ class PriceDeviation:
                 line['smoothed theoretical'] = list[i]['smoothed theoretical']
                 line['smoothed difference'] = list[i]['smoothed difference']
                 line['smoothed actual'] = list[i]['smoothed actual']
+                line['volume'] = list[i]['volume']
                 output_list.append(line)
             return output_list
         else:
